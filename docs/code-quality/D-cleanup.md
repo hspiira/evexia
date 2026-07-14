@@ -32,7 +32,9 @@ legacy system as *the* system.
 
 ## CQ-D02 — Delete dead code
 
-**Severity:** 🟢 Low · **Effort:** XS · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟢 Low · **Effort:** XS · **Status:** ✅ Done · **Owner:** Claude · **PR:** `9da91f2`
+
+> Done: deleted `hooks/useRequireAuth.ts`, `lib/route-auth.ts`, `hooks/useModal.ts`, `api/index.ts` (all verified zero-consumer); trimmed `uiSlice` to theme-only. tsc + `vite build` pass.
 
 **Problem.** Verified zero-consumer modules (grep):
 - `src/hooks/useRequireAuth.ts` (22 lines) — never imported; live guard is `components/common/RequireAuth.tsx`.

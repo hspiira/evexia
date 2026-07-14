@@ -31,12 +31,12 @@
 |----|-------|----------|--------|------------|--------|-------|----|
 | CQ-A01 | Live-mode API paths (`/v1/*`) don't exist in backend schema | 🔴 Critical | M | — | ⬜ | | |
 | CQ-A02 | Fixtures default ON; crisis rules live in fixture files | 🔴 Critical | M | — | ⬜ | | |
-| CQ-A03 | Query-key split-brain (`['user']` vs `['users','detail']`) + central `queryKeys` | 🟠 High | S | — | ⬜ | | |
+| CQ-A03 | Query-key split-brain (`['user']` vs `['users','detail']`) + central `queryKeys` | 🟠 High | S | — | 🟨 | Claude | `dc91516` |
 | CQ-A04 | Client-side filters silently applied over server-paginated data | 🟠 High | M | — | ⬜ | | |
 | CQ-A05 | Entity-by-id resolved via `search` param hack; missing `getById` usage | 🟠 High | M | — | ⬜ | | |
 | CQ-A06 | Hardcoded audit reasons, fake-user fallback, hardcoded completion data | 🟡 Medium | S | CQ-B10 | ⬜ | | |
 | CQ-A07 | `api/client.ts`: triplicated 401-retry, dead 5xx retry, `getBlob` error bypass | 🟠 High | M | — | ⬜ | | |
-| CQ-A08 | `clients` list never strips `?new=1` (sheet reopens on back/refresh) | 🟢 Low | XS | — | ⬜ | | |
+| CQ-A08 | `clients` list never strips `?new=1` (sheet reopens on back/refresh) | 🟢 Low | XS | — | ✅ | Claude | `48ac3b3` |
 | CQ-A09 | Missing/inconsistent error states on client-filtered list pages | 🟡 Medium | S | CQ-B01 | ⬜ | | |
 
 ### Track B — DRY Consolidations ([B-dry.md](./B-dry.md))
@@ -75,7 +75,7 @@
 | ID | Title | Severity | Effort | Depends on | Status | Owner | PR |
 |----|-------|----------|--------|------------|--------|-------|----|
 | CQ-D01 | Delete legacy theme system (`src/theme/`); single dark-mode flag | 🟡 Medium | M | — | ⬜ | | |
-| CQ-D02 | Delete dead code: `useRequireAuth`, `route-auth.ts`, `useModal`, unused `uiSlice` state, stale `api/index.ts` barrel | 🟢 Low | XS | — | ⬜ | | |
+| CQ-D02 | Delete dead code: `useRequireAuth`, `route-auth.ts`, `useModal`, unused `uiSlice` state, stale `api/index.ts` barrel | 🟢 Low | XS | — | ✅ | Claude | `9da91f2` |
 | CQ-D03 | Move prototype/mock code out of prod trees (`inbox.tsx`, `QueryTable.tsx`) | 🟡 Medium | S | — | ⬜ | | |
 | CQ-D04 | Wire up or delete decorative UI (Export buttons, no-op filters, selection checkboxes, dead `timeRange`) | 🟢 Low | S | CQ-B01 | ⬜ | | |
 | CQ-D05 | Small DRY sweep: `isCookieAuth`, auth bootstrap dedupe, `unwrapItems`, statusConfig/statusColors merge, `goToLogin`, `LANGUAGE_OPTIONS`, currency default | 🟢 Low | S | — | ⬜ | | |

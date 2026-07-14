@@ -84,7 +84,13 @@ delegates to fixture code even in live mode. All fixture files are statically im
 
 ## CQ-A03 — Query-key split-brain: current user cached under two different keys
 
-**Severity:** 🟠 High · **Effort:** S · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟠 High · **Effort:** S · **Status:** 🟨 In progress (core fix done) · **Owner:** Claude · **PR:** `dc91516`
+
+> Done: `lib/query-keys.ts` created (`resourceKeys` factory + `queryKeys` map); the three
+> `['user', userId]` sites (useCanWrite, DashboardHeader, me.tsx) now use
+> `queryKeys.users.detail(id)` so `useEntityMutation({resource:'users'})` invalidation reaches
+> them — the split-brain is fixed. **Remaining:** migrate the ~18 other hand-typed `[..,'detail',..]`
+> literals across routes to the factory, and have `useEntityFormSheet` compose `useEntityMutation`.
 
 **Problem.** The current user is cached as `['user', userId]` in three places, while the same
 record is cached as `['users', 'detail', id]` elsewhere. Any `useEntityMutation({ resource: 'users' })`
@@ -237,7 +243,9 @@ through both. Fix retry by checking `response.status >= 500` inside the retry lo
 
 ## CQ-A08 — `clients` list never strips `?new=1`
 
-**Severity:** 🟢 Low · **Effort:** XS · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟢 Low · **Effort:** XS · **Status:** ✅ Done · **Owner:** Claude · **PR:** `48ac3b3`
+
+> Done: the `?new=1` effect now calls `navigate({ search: (prev) => ({ ...prev, new: undefined }), replace: true })` after opening the sheet, matching every other list route.
 
 **Problem.** Every other list page opens the create sheet from `?new=1` and then strips the
 param; `src/routes/clients/index.tsx:105-107` opens the sheet but never strips it, so closing the
