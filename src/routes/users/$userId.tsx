@@ -48,6 +48,8 @@ import { cn } from "@/lib/utils"
 import type { Person, User } from "@/types/entities"
 import { AuthProvider, TenantRole } from "@/types/enums"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
+import { formatDateTime } from "@/lib/format"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/users/$userId")({
   component: UserDetailPage,
@@ -276,7 +278,7 @@ function UserDetailPage() {
                         label="Last login"
                         value={
                           user.last_login_at
-                            ? new Date(user.last_login_at).toLocaleString()
+                            ? formatDateTime(user.last_login_at)
                             : null
                         }
                       />
@@ -284,7 +286,7 @@ function UserDetailPage() {
                         label="Status changed"
                         value={
                           user.status_changed_at
-                            ? new Date(user.status_changed_at).toLocaleString()
+                            ? formatDateTime(user.status_changed_at)
                             : null
                         }
                       />
@@ -345,7 +347,7 @@ function UserDetailPage() {
                       label="Verified at"
                       value={
                         user.email_verified_at
-                          ? new Date(user.email_verified_at).toLocaleString()
+                          ? formatDateTime(user.email_verified_at)
                           : null
                       }
                     />
@@ -646,21 +648,6 @@ function DetailRail({ user, person, onAction, actionLoading, onVerifyEmail, veri
   )
 }
 
-function DetailCard({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <section className="rounded-sm border border-fg/10 bg-surface p-4">
-      <h3 className="mb-3 text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
 const ROLE_LABEL: Record<TenantRole, string> = {
   [TenantRole.ADMIN]: "Admin",
   [TenantRole.USER]: "User",
@@ -749,55 +736,6 @@ function RoleCard({
         </div>
       )}
     </DetailCard>
-  )
-}
-
-function RailSection({
-  title,
-  children,
-  className,
-}: {
-  title: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <section className={cn("space-y-2", className)}>
-      <h3 className="text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function Stat({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="rounded-sm border border-fg/10 bg-surface px-3 py-2">
-      <div className="text-[11px] font-medium tracking-wide text-fg/55">{label}</div>
-      <div className="mt-0.5 font-mono text-base font-semibold text-fg">{value}</div>
-    </div>
-  )
-}
-
-function DetailGrid({ children }: { children: React.ReactNode }) {
-  return <dl className="grid grid-cols-2 gap-x-3 gap-y-2.5">{children}</dl>
-}
-
-function DetailRow({
-  label,
-  value,
-  fullWidth,
-}: {
-  label: string
-  value: React.ReactNode
-  fullWidth?: boolean
-}) {
-  return (
-    <div className={cn(fullWidth && "col-span-2")}>
-      <dt className="text-[11px] font-medium tracking-wide text-fg/55">{label}</dt>
-      <dd className="mt-0.5 truncate text-sm text-fg">
-        {value || <span className="text-fg/40">—</span>}
-      </dd>
-    </div>
   )
 }
 

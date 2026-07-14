@@ -46,6 +46,8 @@ import type {
   ServiceSession,
 } from "@/types/entities"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
+import { formatDateTime } from "@/lib/format"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/service-sessions/$sessionId")({
   component: ServiceSessionDetailPage,
@@ -219,7 +221,7 @@ function ServiceSessionDetailPage() {
   return (
     <PageShell
       icon={CalendarClock}
-      breadcrumb={`Delivery · Sessions · ${new Date(session.scheduled_at).toLocaleString()}`}
+      breadcrumb={`Delivery · Sessions · ${formatDateTime(session.scheduled_at)}`}
       actions={
         <>
           <Button
@@ -306,14 +308,14 @@ function ServiceSessionDetailPage() {
                     <DetailGrid>
                       <DetailRow
                         label="Scheduled at"
-                        value={new Date(session.scheduled_at).toLocaleString()}
+                        value={formatDateTime(session.scheduled_at)}
                         fullWidth
                       />
                       <DetailRow
                         label="Completed at"
                         value={
                           session.completed_at
-                            ? new Date(session.completed_at).toLocaleString()
+                            ? formatDateTime(session.completed_at)
                             : null
                         }
                         fullWidth
@@ -477,7 +479,7 @@ function Hero({
         <CalendarClock className="size-4" />
       </span>
       <h1 className="shrink truncate text-base font-semibold leading-tight text-fg">
-        {new Date(session.scheduled_at).toLocaleString()}
+        {formatDateTime(session.scheduled_at)}
       </h1>
       {service ? (
         <Link
@@ -714,7 +716,7 @@ function RescheduleDialog({
           <DialogTitle>Reschedule session</DialogTitle>
           <DialogDescription>
             <CalendarRange className="mr-1 inline size-3" />
-            Previous time: {new Date(currentISO).toLocaleString()}
+            Previous time: {formatDateTime(currentISO)}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
@@ -757,70 +759,6 @@ function RescheduleDialog({
   )
 }
 
-function DetailCard({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <section className="rounded-sm border border-fg/10 bg-surface p-4">
-      <h3 className="mb-3 text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function RailSection({
-  title,
-  children,
-  className,
-}: {
-  title: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <section className={cn("space-y-2", className)}>
-      <h3 className="text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function Stat({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="rounded-sm border border-fg/10 bg-surface px-3 py-2">
-      <div className="text-[11px] font-medium tracking-wide text-fg/55">{label}</div>
-      <div className="mt-0.5 font-mono text-base font-semibold text-fg">{value}</div>
-    </div>
-  )
-}
-
-function DetailGrid({ children }: { children: React.ReactNode }) {
-  return <dl className="grid grid-cols-2 gap-x-3 gap-y-2.5">{children}</dl>
-}
-
-function DetailRow({
-  label,
-  value,
-  fullWidth,
-}: {
-  label: string
-  value: React.ReactNode
-  fullWidth?: boolean
-}) {
-  return (
-    <div className={cn(fullWidth && "col-span-2")}>
-      <dt className="text-[11px] font-medium tracking-wide text-fg/55">{label}</dt>
-      <dd className="mt-0.5 truncate text-sm text-fg">
-        {value || <span className="text-fg/40">—</span>}
-      </dd>
-    </div>
-  )
-}
-
 function toLocalDatetime(iso: string): string {
   if (!iso) return ""
   const d = new Date(iso)
@@ -844,7 +782,7 @@ function BackfillNotice({ session }: { session: ServiceSession }) {
           <p className="mt-0.5 text-fg/65">
             Entered{" "}
             {backfill.logged_at
-              ? new Date(backfill.logged_at).toLocaleString()
+              ? formatDateTime(backfill.logged_at)
               : "later"}
             {backfill.reason ? ` · ${backfill.reason}` : null}
           </p>

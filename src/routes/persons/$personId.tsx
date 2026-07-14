@@ -34,12 +34,14 @@ import {
 } from "@/components/ui/table"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
-import { displayName, personInitials } from "@/lib/display"
+import { displayName, personInitials, nameInitials } from "@/lib/display"
 import { normalizeErrorMessage } from "@/lib/errors"
 import { cn } from "@/lib/utils"
 import type { Client, Person, ServiceSession, User } from "@/types/entities"
 import { PersonType } from "@/types/enums"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
+import { formatDateTime } from "@/lib/format"
+import { DetailCard, DetailGrid, DetailRow, RailSection } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/persons/$personId")({
   component: PersonDetailPage,
@@ -556,7 +558,7 @@ function DetailRail({ person, client, user, onAction, actionLoading }: DetailRai
               aria-hidden
               className="grid size-7 shrink-0 place-items-center bg-primary/10 font-mono text-[10px] font-semibold text-primary"
             >
-              {clientInitial(client.name)}
+              {nameInitials(client.name)}
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-medium text-fg">{client.name}</p>
@@ -605,69 +607,6 @@ function DetailRail({ person, client, user, onAction, actionLoading }: DetailRai
       </RailSection>
     </div>
   )
-}
-
-function DetailCard({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <section className="rounded-sm border border-fg/10 bg-surface p-4">
-      <h3 className="mb-3 text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function RailSection({
-  title,
-  children,
-  className,
-}: {
-  title: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <section className={cn("space-y-2", className)}>
-      <h3 className="text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function DetailGrid({ children }: { children: React.ReactNode }) {
-  return <dl className="grid grid-cols-2 gap-x-3 gap-y-2.5">{children}</dl>
-}
-
-function DetailRow({
-  label,
-  value,
-  fullWidth,
-}: {
-  label: string
-  value: React.ReactNode
-  fullWidth?: boolean
-}) {
-  return (
-    <div className={cn(fullWidth && "col-span-2")}>
-      <dt className="text-[11px] font-medium tracking-wide text-fg/55">{label}</dt>
-      <dd className="mt-0.5 truncate text-sm text-fg">
-        {value || <span className="text-fg/40">—</span>}
-      </dd>
-    </div>
-  )
-}
-
-function clientInitial(name: string): string {
-  const trimmed = name.trim()
-  if (!trimmed) return "·"
-  const parts = trimmed.split(/\s+/)
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-  return trimmed.slice(0, 2).toUpperCase()
 }
 
 function SessionsPanel({
@@ -727,7 +666,7 @@ function SessionsPanel({
             {sessions.slice(0, 10).map((s) => (
               <TableRow key={s.id} className="group border-fg/8">
                 <TableCell className="text-sm text-fg">
-                  {new Date(s.scheduled_at).toLocaleString()}
+                  {formatDateTime(s.scheduled_at)}
                 </TableCell>
                 <TableCell>
                   <Link

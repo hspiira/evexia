@@ -42,6 +42,9 @@ import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/store/slices/authSlice"
 import type { CallbackCase, CallbackOutcome } from "@/types/entities"
 import { CallbackCaseStatus } from "@/types/enums"
+import { nameInitials } from "@/lib/display"
+import { formatDate, formatDateTime } from "@/lib/format"
+import { DetailCard, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/care-callbacks/worklist/$caseId")({
   component: CaseTriagePage,
@@ -385,7 +388,7 @@ function Hero({
         aria-hidden
         className="grid size-9 shrink-0 place-items-center rounded-sm bg-primary/10 font-mono text-xs font-semibold text-primary"
       >
-        {personInitial(callCase.person_display_name)}
+        {nameInitials(callCase.person_display_name)}
       </span>
       <h1 className="shrink truncate text-base font-semibold leading-tight text-fg">
         {callCase.person_display_name}
@@ -432,7 +435,7 @@ function DetailRail({
             label="Started"
             value={
               callCase.started_at
-                ? new Date(callCase.started_at).toLocaleDateString()
+                ? formatDate(callCase.started_at)
                 : "—"
             }
           />
@@ -440,7 +443,7 @@ function DetailRail({
             label="Closed"
             value={
               callCase.closed_at
-                ? new Date(callCase.closed_at).toLocaleDateString()
+                ? formatDate(callCase.closed_at)
                 : "—"
             }
           />
@@ -478,7 +481,7 @@ function DetailRail({
             aria-hidden
             className="grid size-7 shrink-0 place-items-center bg-primary/10 font-mono text-[10px] font-semibold text-primary"
           >
-            {personInitial(callCase.person_display_name)}
+            {nameInitials(callCase.person_display_name)}
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-fg">
@@ -509,7 +512,7 @@ function ExistingOutcomeCard({ outcome }: { outcome: CallbackOutcome }) {
     <DetailCard title="Outcome on file">
       <header className="mb-3 flex items-center justify-between gap-2">
         <span className="text-xs text-fg/55">
-          {new Date(outcome.recorded_at).toLocaleString()} · by{" "}
+          {formatDateTime(outcome.recorded_at)} · by{" "}
           <span className="font-mono">{outcome.recorded_by_user_id}</span>
         </span>
       </header>
@@ -572,55 +575,6 @@ function CaseStatusPill({ status }: { status: CallbackCaseStatus }) {
       {status}
     </span>
   )
-}
-
-function DetailCard({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <section className="rounded-sm border border-fg/10 bg-surface p-4">
-      <h3 className="mb-3 text-sm font-semibold text-fg">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function RailSection({
-  title,
-  children,
-  className,
-}: {
-  title: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <section className={cn("space-y-2", className)}>
-      <h3 className="text-xs font-semibold tracking-wide text-fg/55">{title}</h3>
-      {children}
-    </section>
-  )
-}
-
-function Stat({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="rounded-sm border border-fg/10 bg-surface px-3 py-2">
-      <div className="text-[11px] font-medium tracking-wide text-fg/55">{label}</div>
-      <div className="mt-0.5 text-sm font-semibold text-fg">{value}</div>
-    </div>
-  )
-}
-
-function personInitial(name: string): string {
-  const trimmed = name.trim()
-  if (!trimmed) return "·"
-  const parts = trimmed.split(/\s+/)
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-  return trimmed.slice(0, 2).toUpperCase()
 }
 
 function hasAnyAnswer(map: AnswersMap): boolean {

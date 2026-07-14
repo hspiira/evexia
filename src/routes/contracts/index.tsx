@@ -12,7 +12,6 @@ import {
 
 import { contractsApi } from "@/api/endpoints/contracts"
 import { EmptyState } from "@/components/common/EmptyState"
-import { ErrorState } from "@/components/common/ErrorState"
 import {
   FilterBar,
   FilterButton,
@@ -20,12 +19,10 @@ import {
   FilterSearch,
   FilterTrigger,
 } from "@/components/common/FilterBar"
-import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
 import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
 import { StatusBadge } from "@/components/common/StatusBadge"
-import { ROW_BORDER } from "@/components/common/tableStyles"
 import { ContractFormSheet } from "@/components/ContractFormSheet"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -52,6 +49,9 @@ import { formatMoney } from "@/lib/format"
 import { useEntityList } from "@/lib/queries"
 import type { Contract } from "@/types/entities"
 import { ContractStatus } from "@/types/enums"
+import { IconButton } from "@/components/common/IconButton"
+import { ErrorState } from "@/components/common/ErrorState"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(value: unknown): value is ContractStatus {
   return (
