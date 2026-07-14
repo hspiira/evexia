@@ -22,6 +22,7 @@ import {
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
 import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -37,7 +38,6 @@ import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/store/slices/authSlice"
 import type { CallbackCase } from "@/types/entities"
 import { CallbackCaseStatus } from "@/types/enums"
-import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(v: unknown): v is CallbackCaseStatus {
   return (

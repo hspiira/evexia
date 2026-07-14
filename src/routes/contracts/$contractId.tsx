@@ -14,6 +14,7 @@ import {
 import { clientsApi } from "@/api/endpoints/clients"
 import { contractsApi } from "@/api/endpoints/contracts"
 import { serviceAssignmentsApi } from "@/api/endpoints/service-assignments"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { LifecycleActions } from "@/components/common/LifecycleActions"
 import { PageShell } from "@/components/common/PageShell"
@@ -33,13 +34,11 @@ import {
 } from "@/components/ui/table"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
+import { nameInitials } from "@/lib/display"
 import { normalizeErrorMessage } from "@/lib/errors"
-import { cn } from "@/lib/utils"
+import { formatMoney } from "@/lib/format"
 import type { Client, Contract, ServiceAssignment } from "@/types/entities"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { nameInitials } from "@/lib/display"
-import { formatMoney } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/contracts/$contractId")({
   component: ContractDetailPage,

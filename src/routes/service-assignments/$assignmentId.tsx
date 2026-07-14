@@ -13,6 +13,7 @@ import {
 import { contractsApi } from "@/api/endpoints/contracts"
 import { serviceAssignmentsApi } from "@/api/endpoints/service-assignments"
 import { servicesApi } from "@/api/endpoints/services"
+import { DetailCard, DetailGrid, DetailRow, RailSection } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { LifecycleActions } from "@/components/common/LifecycleActions"
 import { PageShell } from "@/components/common/PageShell"
@@ -24,10 +25,8 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
 import { normalizeErrorMessage } from "@/lib/errors"
-import { cn } from "@/lib/utils"
 import type { Contract, Service, ServiceAssignment } from "@/types/entities"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { DetailCard, DetailGrid, DetailRow, RailSection } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/service-assignments/$assignmentId")({
   component: ServiceAssignmentDetailPage,

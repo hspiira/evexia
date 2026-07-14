@@ -14,6 +14,7 @@ import {
 import { serviceAssignmentsApi } from "@/api/endpoints/service-assignments"
 import { serviceSessionsApi } from "@/api/endpoints/service-sessions"
 import { servicesApi } from "@/api/endpoints/services"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { LifecycleActions } from "@/components/common/LifecycleActions"
 import { PageShell } from "@/components/common/PageShell"
@@ -33,11 +34,9 @@ import {
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
 import { normalizeErrorMessage } from "@/lib/errors"
-import { cn } from "@/lib/utils"
+import { formatDateTime } from "@/lib/format"
 import type { Service, ServiceAssignment, ServiceSession } from "@/types/entities"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { formatDateTime } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/services/$serviceId")({
   component: ServiceDetailPage,

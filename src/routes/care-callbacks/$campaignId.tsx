@@ -13,6 +13,7 @@ import {
 import { careCallbacksApi } from "@/api/endpoints/care-callbacks"
 import { K_ANON_FLOOR } from "@/api/endpoints/care-callbacks-fixture"
 import { clientsApi } from "@/api/endpoints/clients"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { PageShell } from "@/components/common/PageShell"
 import { DetailSkeleton } from "@/components/common/PageSkeletons"
@@ -27,6 +28,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
+import { nameInitials } from "@/lib/display"
+import { formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import { CampaignStatusPill } from "@/routes/care-callbacks/index"
 import type {
@@ -36,9 +39,6 @@ import type {
   Client,
 } from "@/types/entities"
 import { CallbackCaseStatus } from "@/types/enums"
-import { nameInitials } from "@/lib/display"
-import { formatDate } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/care-callbacks/$campaignId")({
   component: CampaignDetailPage,

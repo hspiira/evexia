@@ -11,6 +11,7 @@ import {
 import { clientsApi } from "@/api/endpoints/clients"
 import { surveysApi } from "@/api/endpoints/surveys"
 import { SURVEY_K_FLOOR } from "@/api/endpoints/surveys-fixture"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { PageShell } from "@/components/common/PageShell"
 import { DetailSkeleton } from "@/components/common/PageSkeletons"
@@ -27,15 +28,13 @@ import {
 } from "@/components/ui/table"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
+import { nameInitials } from "@/lib/display"
 import { defaultErrorMessage } from "@/lib/errors"
+import { formatDate, formatDateTime } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
-import { cn } from "@/lib/utils"
 import { SurveyStatusPill } from "@/routes/surveys/index"
 import type { Client, Survey, SurveyAggregate } from "@/types/entities"
 import { SurveyStatus } from "@/types/enums"
-import { nameInitials } from "@/lib/display"
-import { formatDate, formatDateTime } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/surveys/$surveyId")({
   component: SurveyDetailPage,

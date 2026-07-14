@@ -16,6 +16,7 @@ import {
 import { clientsApi } from "@/api/endpoints/clients"
 import { engagementsApi } from "@/api/endpoints/engagements"
 import { usersApi } from "@/api/endpoints/users"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { FormField } from "@/components/common/FormField"
 import { PageShell } from "@/components/common/PageShell"
@@ -40,7 +41,9 @@ import {
 } from "@/components/ui/table"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
+import { nameInitials } from "@/lib/display"
 import { defaultErrorMessage } from "@/lib/errors"
+import { formatDate, formatDateTime, formatMoney } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
 import { cn } from "@/lib/utils"
 import {
@@ -61,9 +64,6 @@ import {
   DeliverableStatus,
   type EngagementStatus
 } from "@/types/enums"
-import { nameInitials } from "@/lib/display"
-import { formatDate, formatDateTime, formatMoney } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/engagements/$engagementId")({
   component: EngagementDetailPage,

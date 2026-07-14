@@ -14,6 +14,7 @@ import {
 
 import { personsApi } from "@/api/endpoints/persons"
 import { usersApi } from "@/api/endpoints/users"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { FormField } from "@/components/common/FormField"
 import { LifecycleActions } from "@/components/common/LifecycleActions"
@@ -44,12 +45,10 @@ import { useCanWrite } from "@/hooks/useCanWrite"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
 import { displayName, personInitials } from "@/lib/display"
 import { normalizeErrorMessage } from "@/lib/errors"
-import { cn } from "@/lib/utils"
+import { formatDateTime } from "@/lib/format"
 import type { Person, User } from "@/types/entities"
 import { AuthProvider, TenantRole } from "@/types/enums"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { formatDateTime } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/users/$userId")({
   component: UserDetailPage,

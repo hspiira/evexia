@@ -17,6 +17,7 @@ import { personsApi } from "@/api/endpoints/persons"
 import { providersApi } from "@/api/endpoints/providers"
 import { serviceSessionsApi } from "@/api/endpoints/service-sessions"
 import { servicesApi } from "@/api/endpoints/services"
+import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { FormField } from "@/components/common/FormField"
 import { LifecycleActions } from "@/components/common/LifecycleActions"
@@ -38,6 +39,7 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
 import { displayName, personInitials } from "@/lib/display"
+import { formatDateTime } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type {
   Person,
@@ -46,8 +48,6 @@ import type {
   ServiceSession,
 } from "@/types/entities"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { formatDateTime } from "@/lib/format"
-import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/service-sessions/$sessionId")({
   component: ServiceSessionDetailPage,

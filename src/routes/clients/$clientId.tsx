@@ -24,6 +24,7 @@ import type { ClientTodaysTodoItem } from "@/components/ClientTodaysTodoCard"
 import { ClientTodaysTodoCard } from "@/components/ClientTodaysTodoCard"
 import type { ClientUpcomingItem } from "@/components/ClientUpcomingCard"
 import { ClientUpcomingCard } from "@/components/ClientUpcomingCard"
+import { DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 import { EmptyState } from "@/components/common/EmptyState"
 import { LifecycleActions } from "@/components/common/LifecycleActions"
 import { PageShell } from "@/components/common/PageShell"
@@ -35,6 +36,7 @@ import {
   type SortState,
 } from "@/components/common/SortHeader"
 import { StatusBadge } from "@/components/common/StatusBadge"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 import { Tab, TabPanel, Tabs, TabsList } from "@/components/common/Tabs"
 import { TierBadge } from "@/components/common/TierBadge"
 import { ContractFormSheet } from "@/components/ContractFormSheet"
@@ -51,14 +53,11 @@ import {
 } from "@/components/ui/table"
 import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
+import { nameInitials } from "@/lib/display"
 import { normalizeErrorMessage } from "@/lib/errors"
-import { cn } from "@/lib/utils"
 import type { Client, ClientStats, ClientTag, Contract } from "@/types/entities"
 import { PersonType } from "@/types/enums"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { ROW_BORDER } from "@/components/common/tableStyles"
-import { nameInitials } from "@/lib/display"
-import { DetailGrid, DetailRow, RailSection, Stat } from "@/components/common/DetailPrimitives"
 
 export const Route = createFileRoute("/clients/$clientId")({
   component: ClientDetailPage,
