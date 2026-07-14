@@ -48,7 +48,9 @@ the loading/error/empty/table/pagination ternary chain, sticky `TableHeader` wit
 
 ## CQ-B02 — Extract `DetailPrimitives` (10+ verbatim copies, ~1,100 lines)
 
-**Severity:** 🟠 High · **Effort:** S · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟠 High · **Effort:** S · **Status:** ✅ Done · **Owner:** Claude · **PR:** `a72df1f`
+
+> Done: all 5 primitives extracted to `components/common/DetailPrimitives.tsx`; removed from 11 detail routes (verified byte-identical before extraction). tsc + lint + `vite build` pass. `grep "function DetailCard" src/routes` → 0.
 
 **Problem.** Five presentational primitives — `DetailCard`, `RailSection`, `Stat`, `DetailGrid`,
 `DetailRow` (~120 lines) — are byte-identical (or trivially divergent) private functions in every
@@ -198,7 +200,9 @@ pairs, ~60 occurrences). `SelectField` takes `options` + `getLabel`. Wrap picker
 
 ## CQ-B06 — Move `IconButton`, `ErrorState`, `ROW_BORDER` to `components/common`
 
-**Severity:** 🟡 Medium · **Effort:** XS · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟡 Medium · **Effort:** XS · **Status:** ✅ Done · **Owner:** Claude · **PR:** `1182cfc`
+
+> Done: `components/common/IconButton.tsx`, `ErrorState.tsx`, `tableStyles.ts` created; 12/8/14 local copies removed; unused `RotateCw` imports cleaned. `grep "function IconButton\|function ErrorState\|const ROW_BORDER" src/routes` → 0. tsc + lint pass.
 
 **Problem.** Verified by grep: `function IconButton` (identical 22 lines) in **12 files**;
 `function ErrorState` (identical 13 lines) in **8 files**; `const ROW_BORDER` in **14 files**.
@@ -252,7 +256,9 @@ Spread into each module; keep bespoke routes (setTier, verify, 2FA, stats) hand-
 
 ## CQ-B08 — Shared formatters: `nameInitials`, `formatDate(Time)`, `formatMoney`, datetime input helpers
 
-**Severity:** 🟡 Medium · **Effort:** S · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟡 Medium · **Effort:** S · **Status:** ✅ Done · **Owner:** Claude · **PR:** `a58aa92`, `117e567`
+
+> Done: `nameInitials` added to `lib/display.ts`; `lib/format.ts` created with `formatDate`/`formatDateTime`/`formatMoney`/`toLocalDatetimeInput`. Migrated 15 initials copies, 4 currency copies, 43 plain date calls. Remaining `toLocale*` sites are custom-format (preserved) or number formatting (not dates). tsc + lint pass.
 
 **Problem.** The initials helper is redefined **12×** (components + routes, sometimes under
 different names in the same shape) despite `lib/display.ts:40` already exporting `personInitials`

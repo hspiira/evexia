@@ -44,13 +44,13 @@
 | ID | Title | Severity | Effort | Depends on | Status | Owner | PR |
 |----|-------|----------|--------|------------|--------|-------|----|
 | CQ-B01 | `useListPage` hook + `EntityListView` — kill the ~400-line list-page template (~12 pages) | 🟠 High | L | CQ-B06, CQ-B09 | ⬜ | | |
-| CQ-B02 | Extract `DetailPrimitives` (`DetailCard`/`RailSection`/`Stat`/`DetailGrid`/`DetailRow`) — 10+ copies | 🟠 High | S | — | ⬜ | | |
+| CQ-B02 | Extract `DetailPrimitives` (`DetailCard`/`RailSection`/`Stat`/`DetailGrid`/`DetailRow`) — 10+ copies | 🟠 High | S | — | ✅ | Claude | `a72df1f` |
 | CQ-B03 | Generic `EntityPicker<T>` + `LockedEntitySummary` — 9 picker copies (~1,250 lines) | 🟠 High | M | CQ-A05 | ⬜ | | |
 | CQ-B04 | `EntityDetailPage` scaffold — loading/not-found/header/hero/8-4 grid chrome (11+ pages) | 🟠 High | L | CQ-B02, CQ-B08 | ⬜ | | |
 | CQ-B05 | RHF field wrappers `TextField`/`SelectField`/`DateField` — 20+ Controller+Select copies | 🟡 Medium | M | — | ⬜ | | |
-| CQ-B06 | Move `IconButton` (×12), `ErrorState` (×8), `ROW_BORDER` (×14) to `components/common` | 🟡 Medium | XS | — | ⬜ | | |
+| CQ-B06 | Move `IconButton` (×12), `ErrorState` (×8), `ROW_BORDER` (×14) to `components/common` | 🟡 Medium | XS | — | ✅ | Claude | `1182cfc` |
 | CQ-B07 | `makeCrudEndpoints` / `makeLifecycleEndpoints` factories in `api/endpoints` | 🟡 Medium | S | — | ⬜ | | |
-| CQ-B08 | Shared formatters: `nameInitials`, `formatDate(Time)`, `formatMoney`, datetime input helpers | 🟡 Medium | S | — | ⬜ | | |
+| CQ-B08 | Shared formatters: `nameInitials`, `formatDate(Time)`, `formatMoney`, datetime input helpers | 🟡 Medium | S | — | ✅ | Claude | `a58aa92` |
 | CQ-B09 | Search-param helpers: `enumParam`, `listSearchSchema`, `enumOptions`, `useNewParamSheet` | 🟡 Medium | S | — | ⬜ | | |
 | CQ-B10 | `useLifecycleActions` hook + shared `ReasonDialog` — 7 copies of the action switch | 🟡 Medium | M | — | ⬜ | | |
 | CQ-B11 | Shared zod helpers: date-range refine, numeric-string coercion, required-group | 🟢 Low | S | — | ⬜ | | |
