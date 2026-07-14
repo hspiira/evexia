@@ -140,7 +140,13 @@ byte-identical value sets to the hand-written enums.
 
 ## CQ-C05 — Enforce `StatusBadge`/`statusConfig`; delete local status pills
 
-**Severity:** 🟡 Medium · **Effort:** S · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟡 Medium · **Effort:** S · **Status:** ✅ Done · **Owner:** Claude · **PR:** `f814866`
+
+> Done: deleted `EngagementStatusPill`, `CampaignStatusPill`, `SurveyStatusPill` + their `statusTone`
+> helpers (and a duplicate `CampaignStatusPill` in reports) and the route-to-route imports; all
+> render via `StatusBadge`. Aligns a few colors to the canonical palette (Delivered green, Cancelled
+> grey) — adjust in `statusColors.ts` if design prefers. **Follow-up:** `CaseStatusPill`
+> (`CallbackCaseStatus`, ×3) left as-is because its escalation colors carry semantics.
 
 **Problem.** `utils/statusConfig.ts:1-4` declares itself the single source of truth ("no ad-hoc
 status strings"), and `StatusBadge` is used by contracts/persons/users/clients/tenants/incidents —

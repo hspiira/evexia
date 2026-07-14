@@ -84,13 +84,15 @@ delegates to fixture code even in live mode. All fixture files are statically im
 
 ## CQ-A03 — Query-key split-brain: current user cached under two different keys
 
-**Severity:** 🟠 High · **Effort:** S · **Status:** 🟨 In progress (core fix done) · **Owner:** Claude · **PR:** `dc91516`
+**Severity:** 🟠 High · **Effort:** S · **Status:** ✅ Done · **Owner:** Claude · **PR:** `dc91516`, `4ef79b0`
 
 > Done: `lib/query-keys.ts` created (`resourceKeys` factory + `queryKeys` map); the three
-> `['user', userId]` sites (useCanWrite, DashboardHeader, me.tsx) now use
-> `queryKeys.users.detail(id)` so `useEntityMutation({resource:'users'})` invalidation reaches
-> them — the split-brain is fixed. **Remaining:** migrate the ~18 other hand-typed `[..,'detail',..]`
-> literals across routes to the factory, and have `useEntityFormSheet` compose `useEntityMutation`.
+> `['user', userId]` sites now use `queryKeys.users.detail(id)` so
+> `useEntityMutation({resource:'users'})` invalidation reaches them — split-brain fixed. Migrated
+> ~27 hand-typed `detail`/`list` key literals across routes + form sheets to the factory;
+> `extraInvalidations` widened to `QueryKey`. Three self-consistent paginated sub-keys left as-is.
+> **Deferred (own ticket):** have `useEntityFormSheet` fully compose `useEntityMutation` (currently
+> re-implements invalidation) — tracked under CQ-C01's mutation-idiom convergence.
 
 **Problem.** The current user is cached as `['user', userId]` in three places, while the same
 record is cached as `['users', 'detail', id]` elsewhere. Any `useEntityMutation({ resource: 'users' })`

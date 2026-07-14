@@ -49,9 +49,9 @@
 | CQ-B04 | `EntityDetailPage` scaffold — loading/not-found/header/hero/8-4 grid chrome (11+ pages) | 🟠 High | L | CQ-B02, CQ-B08 | ⬜ | | |
 | CQ-B05 | RHF field wrappers `TextField`/`SelectField`/`DateField` — 20+ Controller+Select copies | 🟡 Medium | M | — | ⬜ | | |
 | CQ-B06 | Move `IconButton` (×12), `ErrorState` (×8), `ROW_BORDER` (×14) to `components/common` | 🟡 Medium | XS | — | ✅ | Claude | `1182cfc` |
-| CQ-B07 | `makeCrudEndpoints` / `makeLifecycleEndpoints` factories in `api/endpoints` | 🟡 Medium | S | — | ⬜ | | |
+| CQ-B07 | `makeCrudEndpoints` / `makeLifecycleEndpoints` factories in `api/endpoints` | 🟡 Medium | S | — | 🟨 | Claude | `2b8960b` |
 | CQ-B08 | Shared formatters: `nameInitials`, `formatDate(Time)`, `formatMoney`, datetime input helpers | 🟡 Medium | S | — | ✅ | Claude | `a58aa92` |
-| CQ-B09 | Search-param helpers: `enumParam`, `listSearchSchema`, `enumOptions`, `useNewParamSheet` | 🟡 Medium | S | — | ⬜ | | |
+| CQ-B09 | Search-param helpers: `enumParam`, `listSearchSchema`, `enumOptions`, `useNewParamSheet` | 🟡 Medium | S | — | 🟨 | Claude | `8efd351` |
 | CQ-B10 | `useLifecycleActions` hook + shared `ReasonDialog` — 7 copies of the action switch | 🟡 Medium | M | — | ⬜ | | |
 | CQ-B11 | Shared zod helpers: date-range refine, numeric-string coercion, required-group | 🟢 Low | S | — | ⬜ | | |
 | CQ-B12 | `EntityLinkCard` (20 copies) + shared `Pill` chip | 🟢 Low | S | CQ-B08 | ⬜ | | |
@@ -65,7 +65,7 @@
 | CQ-C02 | Split god detail routes into feature folders (route = composition only) | 🟡 Medium | L | CQ-B02, CQ-B04 | ⬜ | | |
 | CQ-C03 | Split `PersonFormSheet` by subtype/mode; move save orchestration to API layer | 🟡 Medium | M | CQ-B03, CQ-B05 | ⬜ | | |
 | CQ-C04 | Alias hand-written `types/entities.ts` / `enums.ts` to generated OpenAPI types | 🟠 High | M | CQ-A01 | ⬜ | | |
-| CQ-C05 | Enforce `StatusBadge`/`statusConfig`; delete 3 local status-pill implementations | 🟡 Medium | S | — | ⬜ | | |
+| CQ-C05 | Enforce `StatusBadge`/`statusConfig`; delete 3 local status-pill implementations | 🟡 Medium | S | — | ✅ | Claude | `f814866` |
 | CQ-C06 | Type list-filter params in endpoints; remove `as Record<string, unknown>` casts | 🟡 Medium | S | CQ-A04 | ⬜ | | |
 | CQ-C07 | Zod schemas ↔ generated request types: `satisfies`/typed `parsePayload` everywhere | 🟡 Medium | S | CQ-C04 | ⬜ | | |
 | CQ-C08 | `SheetForm` dirty-state discard guard via existing `ConfirmDialog` | 🟡 Medium | S | — | ⬜ | | |

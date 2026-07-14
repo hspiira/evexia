@@ -224,7 +224,13 @@ Mechanical, zero-risk, ~350 lines deleted. Do this before CQ-B01.
 
 ## CQ-B07 — CRUD + lifecycle endpoint factories
 
-**Severity:** 🟡 Medium · **Effort:** S · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟡 Medium · **Effort:** S · **Status:** 🟨 In progress · **Owner:** Claude · **PR:** `2b8960b`
+
+> Done: `api/endpoints/_factory.ts` (`makeCrudEndpoints`, `makeLifecycleEndpoints`). Adopted CRUD in
+> clients/services/contracts and full lifecycle in clients (exact body match). **Remaining:** users
+> (no `update`, divergent lifecycle incl. `ban`), persons (no `update`, `deactivate` body differs),
+> tenants (`create` returns a different type) — their lifecycle bodies (`{}` vs `undefined`) and verb
+> subsets diverge, so adopting the factory there needs per-entity care to avoid changing payloads.
 
 **Problem.** Four+ endpoint modules hand-write identical `create/getById/list/update` shapes plus
 the lifecycle verb family (`activate/deactivate(reason?)/suspend(reason)/terminate(reason)/
@@ -285,7 +291,13 @@ then changes in one place; honoring user preferences becomes a one-file change l
 
 ## CQ-B09 — Search-param helpers: `enumParam`, `listSearchSchema`, `enumOptions`, `useNewParamSheet`
 
-**Severity:** 🟡 Medium · **Effort:** S · **Status:** ⬜ Todo · **Owner:** — · **PR:** —
+**Severity:** 🟡 Medium · **Effort:** S · **Status:** 🟨 In progress · **Owner:** Claude · **PR:** `8efd351`
+
+> Done: `lib/search-params.ts` with `enumParam`, `listSearchSchema`, `enumOptions`; contracts list
+> adopted as the reference (removed its hand-enumerated `isStatus` guard and `STATUS_OPTIONS` array).
+> **Remaining:** roll out to the other ~11 list pages and add `useNewParamSheet` — folded into the
+> CQ-B01 `useListPage` migration (deferred there because `useNewParamSheet` needs a per-route literal
+> id for TanStack's typed `useSearch`/`useNavigate`).
 
 **Problem.** Every list page hand-rolls `validateSearch`: enum guards that manually enumerate every
 member (break silently when a member is added — OCP violation), the literal
