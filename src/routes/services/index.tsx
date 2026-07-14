@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router"
 import {
@@ -11,7 +11,7 @@ import {
 
 import { servicesApi } from "@/api/endpoints/services"
 import { EmptyState } from "@/components/common/EmptyState"
-import { ErrorState } from "@/components/common/ErrorState"
+import { EntityListView, type ListColumn } from "@/components/common/EntityListView"
 import {
   FilterBar,
   FilterButton,
@@ -21,8 +21,6 @@ import {
 } from "@/components/common/FilterBar"
 import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
-import { TableSkeleton } from "@/components/common/PageSkeletons"
-import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
 import { StatusBadge } from "@/components/common/StatusBadge"
 import { ROW_BORDER } from "@/components/common/tableStyles"
 import { humanizeServiceType, ServiceFormSheet } from "@/components/ServiceFormSheet"
@@ -35,41 +33,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Pagination } from "@/components/ui/pagination"
 import {
-  Table,
-  TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useDebouncedValue } from "@/hooks/useDebouncedValue"
+import { useListPage } from "@/hooks/useListPage"
 import { normalizeErrorMessage } from "@/lib/errors"
-import { useEntityList } from "@/lib/queries"
+import { enumParam, listSearchSchema } from "@/lib/search-params"
 import type { Service } from "@/types/entities"
 import { BaseStatus } from "@/types/enums"
 
-function isStatus(value: unknown): value is BaseStatus {
-  return (
-    value === BaseStatus.ACTIVE ||
-    value === BaseStatus.INACTIVE ||
-    value === BaseStatus.PENDING ||
-    value === BaseStatus.ARCHIVED
-  )
-}
-
 export const Route = createFileRoute("/services/")({
   component: ServicesListPage,
-  validateSearch: (search: Record<string, unknown>) => {
-    const out: { new?: boolean; search?: string; status?: BaseStatus } = {}
-    if (search.new === "1" || search.new === true) out.new = true
-    if (typeof search.search === "string" && search.search.trim()) out.search = search.search
-    if (isStatus(search.status)) out.status = search.status
-    return out
-  },
+  validateSearch: listSearchSchema({ status: enumParam(BaseStatus) }),
 })
 
+// Curated subset — BaseStatus also has Pending/Deleted which aren't user filters here.
 const STATUS_OPTIONS = [
   { value: "all", label: "All statuses" },
   { value: BaseStatus.ACTIVE, label: "Active" },
@@ -86,62 +65,50 @@ const GROUP_OPTIONS = [
 type StatusFilter = (typeof STATUS_OPTIONS)[number]["value"]
 type GroupFilter = (typeof GROUP_OPTIONS)[number]["value"]
 
+const COLUMNS: ListColumn[] = [
+  { header: "Service", sortField: "name" },
+  { header: "Type", sortField: "service_type" },
+  { header: "Status", sortField: "status" },
+  { header: "Duration", sortField: "duration_minutes" },
+  { header: "Group", className: "text-fg/65" },
+]
+
 function ServicesListPage() {
   const searchParams = useSearch({ from: "/services/" })
   const navigate = useNavigate({ from: "/services/" })
-  const [searchInput, setSearchInput] = useState(searchParams.search ?? "")
-  const [groupFilter, setGroupFilter] = useState<GroupFilter>("all")
-  const [addOpen, setAddOpen] = useState(false)
-  const [page, setPage] = useState(1)
-  const [sort, setSort] = useState<SortState>({ field: undefined, desc: false })
-  const limit = 20
-  const toggleSort = (field: string) => {
-    setSort((prev) => nextSort(prev, field))
-    setPage(1)
-  }
-
-  const debouncedSearch = useDebouncedValue(searchInput.trim(), 300)
-  const activeSearch = debouncedSearch || undefined
   const activeStatus = searchParams.status
+  const [groupFilter, setGroupFilter] = useState<GroupFilter>("all")
 
-  useEffect(() => {
-    if (searchParams.new) {
-      setAddOpen(true)
-      navigate({ search: (prev) => ({ ...prev, new: undefined }), replace: true })
-    }
-  }, [searchParams.new, navigate])
-
-  useEffect(() => {
-    if (activeSearch !== searchParams.search) {
-      navigate({ search: (prev) => ({ ...prev, search: activeSearch }), replace: true })
-      setPage(1)
-    }
-  }, [activeSearch, navigate, searchParams.search])
+  const {
+    searchInput,
+    setSearchInput,
+    addOpen,
+    setAddOpen,
+    page,
+    setPage,
+    sort,
+    toggleSort,
+    limit,
+    activeSearch,
+    query,
+    items: allItems,
+    total,
+    loading,
+  } = useListPage<Service>({
+    from: "/services/",
+    resource: "services",
+    listFn: servicesApi.list,
+    extraParams: { status: activeStatus },
+  })
+  const items = filterByGroup(allItems, groupFilter)
+  const error = query.isError ? normalizeErrorMessage(query.error, "Failed to load data") : null
+  const hasFilters = Boolean(activeSearch) || Boolean(activeStatus) || groupFilter !== "all"
 
   const handleStatusChange = (next: StatusFilter) => {
     const status = next === "all" ? undefined : next
     navigate({ search: (prev) => ({ ...prev, status }), replace: true })
     setPage(1)
   }
-
-  const query = useEntityList({
-    resource: "services",
-    params: {
-      page,
-      limit,
-      search: activeSearch,
-      status: activeStatus,
-      sort_by: sort.field,
-      sort_desc: sort.field ? sort.desc : undefined,
-    },
-    listFn: servicesApi.list,
-  })
-  const allItems = query.data?.items ?? []
-  const items = filterByGroup(allItems, groupFilter)
-  const total = query.data?.total ?? 0
-  const loading = query.isPending
-  const error = query.isError ? normalizeErrorMessage(query.error, "Failed to load data") : null
-  const hasFilters = Boolean(activeSearch) || Boolean(activeStatus) || groupFilter !== "all"
 
   return (
     <PageShell
@@ -194,14 +161,16 @@ function ServicesListPage() {
 
       <ServiceFormSheet open={addOpen} onOpenChange={setAddOpen} />
 
-      <div className="flex min-h-0 flex-1 flex-col bg-bg">
-        {loading ? (
-          <div className="flex-1 overflow-auto p-5">
-            <TableSkeleton cols={5} />
-          </div>
-        ) : error ? (
-          <ErrorState message={error} onRetry={() => void query.refetch()} />
-        ) : items.length === 0 ? (
+      <EntityListView<Service>
+        columns={COLUMNS}
+        items={items}
+        rowKey={(row) => row.id}
+        renderRow={(row) => <ServiceRow row={row} />}
+        loading={loading}
+        error={error}
+        onRetry={() => void query.refetch()}
+        skeletonCols={5}
+        empty={
           <EmptyState
             icon={Wrench}
             title={hasFilters ? "No services match your filters" : "No services yet"}
@@ -219,56 +188,14 @@ function ServicesListPage() {
               )
             }
           />
-        ) : (
-          <>
-            <div className="relative min-h-0 flex-1 overflow-auto">
-              <Table className="w-full caption-bottom text-sm">
-                <TableHeader className="sticky top-0 z-10 border-b-0 bg-surface shadow-[inset_0_-1px_0_rgb(0_0_0/0.08)]">
-                  <TableRow className={`hover:bg-transparent ${ROW_BORDER}`}>
-                    <TableHead className="w-10 px-3">
-                      <Checkbox aria-label="Select all" />
-                    </TableHead>
-                    <TableHead>
-                      <SortHeader field="name" sort={sort} onToggle={toggleSort}>
-                        Service
-                      </SortHeader>
-                    </TableHead>
-                    <TableHead>
-                      <SortHeader field="service_type" sort={sort} onToggle={toggleSort}>
-                        Type
-                      </SortHeader>
-                    </TableHead>
-                    <TableHead>
-                      <SortHeader field="status" sort={sort} onToggle={toggleSort}>
-                        Status
-                      </SortHeader>
-                    </TableHead>
-                    <TableHead>
-                      <SortHeader field="duration_minutes" sort={sort} onToggle={toggleSort}>
-                        Duration
-                      </SortHeader>
-                    </TableHead>
-                    <TableHead className="text-fg/65">Group</TableHead>
-                    <TableHead className="w-16 text-right text-fg/65">
-                      <span className="sr-only">Actions</span>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {items.map((row) => (
-                    <ServiceRow key={row.id} row={row} />
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-            {total > 0 && (
-              <div className="shrink-0 border-t border-fg/10 bg-surface px-3 py-2">
-                <Pagination page={page} total={total} limit={limit} onPageChange={setPage} />
-              </div>
-            )}
-          </>
-        )}
-      </div>
+        }
+        sort={sort}
+        onToggleSort={toggleSort}
+        page={page}
+        total={total}
+        limit={limit}
+        onPageChange={setPage}
+      />
     </PageShell>
   )
 }
