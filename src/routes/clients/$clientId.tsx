@@ -56,12 +56,11 @@ import { cn } from "@/lib/utils"
 import type { Client, ClientStats, ClientTag, Contract } from "@/types/entities"
 import { PersonType } from "@/types/enums"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 export const Route = createFileRoute("/clients/$clientId")({
   component: ClientDetailPage,
 })
-
-const ROW_BORDER = "border-fg/8"
 
 type TabValue = "overview" | "activity" | "contracts" | "staff"
 const TAB_VALUES: ReadonlyArray<TabValue> = ["overview", "activity", "contracts", "staff"]

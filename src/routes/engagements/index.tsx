@@ -44,6 +44,8 @@ import { useCanWrite } from "@/hooks/useCanWrite"
 import { cn } from "@/lib/utils"
 import type { Engagement } from "@/types/entities"
 import { EngagementStatus, EngagementType } from "@/types/enums"
+import { IconButton } from "@/components/common/IconButton"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(v: unknown): v is EngagementStatus {
   return (
@@ -106,8 +108,6 @@ const TYPE_OPTIONS = [
 
 type StatusFilter = (typeof STATUS_OPTIONS)[number]["value"]
 type TypeFilter = (typeof TYPE_OPTIONS)[number]["value"]
-
-const ROW_BORDER = "border-fg/8"
 
 function EngagementsListPage() {
   const searchParams = useSearch({ from: "/engagements/" })
@@ -476,30 +476,6 @@ export function isOverdue(
   if (status === EngagementStatus.DELIVERED || status === EngagementStatus.CLOSED) return false
   if (status === EngagementStatus.CANCELLED) return false
   return Date.parse(due) < Date.now()
-}
-
-function IconButton({
-  label,
-  icon: Icon,
-  onClick,
-}: {
-  label: string
-  icon: React.ElementType
-  onClick?: () => void
-}) {
-  return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className="size-7 p-0 text-fg/70"
-    >
-      <Icon className="size-3.5" />
-    </Button>
-  )
 }
 
 function filterAndSort(

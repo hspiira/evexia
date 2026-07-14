@@ -38,6 +38,8 @@ import { useEntityList } from "@/lib/queries"
 import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/store/slices/authSlice"
 import type { Industry } from "@/types/entities"
+import { IconButton } from "@/components/common/IconButton"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 export const Route = createFileRoute("/industries")({
   component: IndustriesPage,
@@ -52,8 +54,6 @@ const LEVEL_OPTIONS = [
 ] as const
 
 type LevelFilter = (typeof LEVEL_OPTIONS)[number]["value"]
-
-const ROW_BORDER = "border-fg/8"
 
 function IndustriesPage() {
   const { isAuthenticated, isLoading } = useAuthStore()
@@ -359,30 +359,6 @@ function IndustriesPage() {
         </div>
       </PageShell>
     </AppLayout>
-  )
-}
-
-function IconButton({
-  label,
-  icon: Icon,
-  onClick,
-}: {
-  label: string
-  icon: React.ElementType
-  onClick?: () => void
-}) {
-  return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className="size-7 p-0 text-fg/70"
-    >
-      <Icon className="size-3.5" />
-    </Button>
   )
 }
 

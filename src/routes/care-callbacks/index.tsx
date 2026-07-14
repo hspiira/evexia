@@ -45,6 +45,8 @@ import { useCanWrite } from "@/hooks/useCanWrite"
 import { cn } from "@/lib/utils"
 import type { CallbackCampaign } from "@/types/entities"
 import { CallbackCampaignStatus } from "@/types/enums"
+import { IconButton } from "@/components/common/IconButton"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(v: unknown): v is CallbackCampaignStatus {
   return (
@@ -77,8 +79,6 @@ const STATUS_OPTIONS = [
 ] as const
 
 type StatusFilter = (typeof STATUS_OPTIONS)[number]["value"]
-
-const ROW_BORDER = "border-fg/8"
 
 function CampaignsListPage() {
   const searchParams = useSearch({ from: "/care-callbacks/" })
@@ -361,30 +361,6 @@ function statusTone(status: CallbackCampaignStatus): string {
     default:
       return "border-fg/15 bg-bg text-fg/65"
   }
-}
-
-function IconButton({
-  label,
-  icon: Icon,
-  onClick,
-}: {
-  label: string
-  icon: React.ElementType
-  onClick?: () => void
-}) {
-  return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className="size-7 p-0 text-fg/70"
-    >
-      <Icon className="size-3.5" />
-    </Button>
-  )
 }
 
 function filterAndSort(

@@ -7,7 +7,6 @@ import {
   ExternalLink,
   MoreHorizontal,
   Plus,
-  RotateCw,
 } from "lucide-react"
 
 import { serviceSessionsApi } from "@/api/endpoints/service-sessions"
@@ -48,6 +47,9 @@ import { normalizeErrorMessage } from "@/lib/errors"
 import { useEntityList } from "@/lib/queries"
 import type { ServiceSession } from "@/types/entities"
 import { SessionStatus } from "@/types/enums"
+import { IconButton } from "@/components/common/IconButton"
+import { ErrorState } from "@/components/common/ErrorState"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(value: unknown): value is SessionStatus {
   return (
@@ -99,8 +101,6 @@ const RANGE_OPTIONS = [
 
 type StatusFilter = (typeof STATUS_OPTIONS)[number]["value"]
 type RangeFilter = (typeof RANGE_OPTIONS)[number]["value"]
-
-const ROW_BORDER = "border-fg/8"
 
 function ServiceSessionsListPage() {
   const searchParams = useSearch({ from: "/service-sessions/" })
@@ -435,44 +435,6 @@ function SessionRow({ row }: { row: ServiceSession }) {
         </div>
       </TableCell>
     </TableRow>
-  )
-}
-
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return (
-    <div className="flex flex-1 items-center justify-center px-6 py-10">
-      <div className="flex max-w-sm flex-col items-center text-center">
-        <p className="text-sm text-danger-fg">{message}</p>
-        <Button variant="outline" size="sm" className="mt-4 gap-1.5" onClick={onRetry}>
-          <RotateCw className="size-4" />
-          Try again
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-function IconButton({
-  label,
-  icon: Icon,
-  onClick,
-}: {
-  label: string
-  icon: React.ElementType
-  onClick?: () => void
-}) {
-  return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className="size-7 p-0 text-fg/70"
-    >
-      <Icon className="size-3.5" />
-    </Button>
   )
 }
 

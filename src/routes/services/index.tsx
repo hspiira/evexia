@@ -6,7 +6,6 @@ import {
   ExternalLink,
   MoreHorizontal,
   Plus,
-  RotateCw,
   Wrench,
 } from "lucide-react"
 
@@ -47,6 +46,9 @@ import { normalizeErrorMessage } from "@/lib/errors"
 import { useEntityList } from "@/lib/queries"
 import type { Service } from "@/types/entities"
 import { BaseStatus } from "@/types/enums"
+import { IconButton } from "@/components/common/IconButton"
+import { ErrorState } from "@/components/common/ErrorState"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(value: unknown): value is BaseStatus {
   return (
@@ -83,8 +85,6 @@ const GROUP_OPTIONS = [
 
 type StatusFilter = (typeof STATUS_OPTIONS)[number]["value"]
 type GroupFilter = (typeof GROUP_OPTIONS)[number]["value"]
-
-const ROW_BORDER = "border-fg/8"
 
 function ServicesListPage() {
   const searchParams = useSearch({ from: "/services/" })
@@ -356,44 +356,6 @@ function ServiceRow({ row }: { row: Service }) {
         </div>
       </TableCell>
     </TableRow>
-  )
-}
-
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return (
-    <div className="flex flex-1 items-center justify-center px-6 py-10">
-      <div className="flex max-w-sm flex-col items-center text-center">
-        <p className="text-sm text-danger-fg">{message}</p>
-        <Button variant="outline" size="sm" className="mt-4 gap-1.5" onClick={onRetry}>
-          <RotateCw className="size-4" />
-          Try again
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-function IconButton({
-  label,
-  icon: Icon,
-  onClick,
-}: {
-  label: string
-  icon: React.ElementType
-  onClick?: () => void
-}) {
-  return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="sm"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className="size-7 p-0 text-fg/70"
-    >
-      <Icon className="size-3.5" />
-    </Button>
   )
 }
 
