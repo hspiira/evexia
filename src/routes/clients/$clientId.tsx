@@ -35,6 +35,7 @@ import {
   type SortState,
 } from "@/components/common/SortHeader"
 import { StatusBadge } from "@/components/common/StatusBadge"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 import { Tab, TabPanel, Tabs, TabsList } from "@/components/common/Tabs"
 import { TierBadge } from "@/components/common/TierBadge"
 import { ContractFormSheet } from "@/components/ContractFormSheet"
@@ -56,7 +57,6 @@ import { cn } from "@/lib/utils"
 import type { Client, ClientStats, ClientTag, Contract } from "@/types/entities"
 import { PersonType } from "@/types/enums"
 import type { LifecycleAction } from "@/utils/lifecycleConfig"
-import { ROW_BORDER } from "@/components/common/tableStyles"
 
 export const Route = createFileRoute("/clients/$clientId")({
   component: ClientDetailPage,

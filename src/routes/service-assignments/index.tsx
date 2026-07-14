@@ -11,6 +11,7 @@ import {
 
 import { serviceAssignmentsApi } from "@/api/endpoints/service-assignments"
 import { EmptyState } from "@/components/common/EmptyState"
+import { ErrorState } from "@/components/common/ErrorState"
 import {
   FilterBar,
   FilterButton,
@@ -18,10 +19,12 @@ import {
   FilterSearch,
   FilterTrigger,
 } from "@/components/common/FilterBar"
+import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
 import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
 import { StatusBadge } from "@/components/common/StatusBadge"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 import { ServiceAssignmentFormSheet } from "@/components/ServiceAssignmentFormSheet"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -46,9 +49,6 @@ import { normalizeErrorMessage } from "@/lib/errors"
 import { useEntityList } from "@/lib/queries"
 import type { ServiceAssignment } from "@/types/entities"
 import { BaseStatus } from "@/types/enums"
-import { IconButton } from "@/components/common/IconButton"
-import { ErrorState } from "@/components/common/ErrorState"
-import { ROW_BORDER } from "@/components/common/tableStyles"
 
 function isStatus(value: unknown): value is BaseStatus {
   return (

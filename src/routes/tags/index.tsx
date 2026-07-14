@@ -12,17 +12,20 @@ import {
 
 import { clientTagsApi } from "@/api/endpoints/client-tags"
 import { EmptyState } from "@/components/common/EmptyState"
+import { ErrorState } from "@/components/common/ErrorState"
 import {
   FilterBar,
   FilterButton,
   FilterSearch,
 } from "@/components/common/FilterBar"
+import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
 import {
   nextSort,
   SortHeader,
   type SortState,
 } from "@/components/common/SortHeader"
+import { ROW_BORDER } from "@/components/common/tableStyles"
 import { TagFormSheet } from "@/components/TagFormSheet"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -46,9 +49,6 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { normalizeErrorMessage } from "@/lib/errors"
 import { useEntityList } from "@/lib/queries"
 import type { ClientTag } from "@/types/entities"
-import { IconButton } from "@/components/common/IconButton"
-import { ErrorState } from "@/components/common/ErrorState"
-import { ROW_BORDER } from "@/components/common/tableStyles"
 
 export const Route = createFileRoute("/tags/")({
   component: TagsListPage,
