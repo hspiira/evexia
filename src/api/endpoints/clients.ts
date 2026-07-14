@@ -19,6 +19,7 @@ import type {
   ListParams,
   PaginatedResponse,
 } from '../types'
+import { makeCrudEndpoints, makeLifecycleEndpoints } from './_factory'
 
 export type { ClientCreate, ClientUpdate }
 export type ClientUpdateTier = Schemas['ClientUpdateTier']
@@ -28,33 +29,8 @@ export interface ClientListParams extends ListParams {
 }
 
 export const clientsApi = {
-  /**
-   * Create a new client
-   */
-  async create(clientData: ClientCreate): Promise<Client> {
-    return apiClient.post<Client>('/clients', clientData)
-  },
-
-  /**
-   * Get client by ID
-   */
-  async getById(clientId: string): Promise<Client> {
-    return apiClient.get<Client>(`/clients/${clientId}`)
-  },
-
-  /**
-   * List clients
-   */
-  async list(params?: ClientListParams): Promise<PaginatedResponse<Client>> {
-    return apiClient.get<PaginatedResponse<Client>>('/clients', params as Record<string, unknown>)
-  },
-
-  /**
-   * Update client
-   */
-  async update(clientId: string, data: ClientUpdate): Promise<Client> {
-    return apiClient.patch<Client>(`/clients/${clientId}`, data)
-  },
+  ...makeCrudEndpoints<Client, ClientCreate, ClientUpdate, ClientListParams>('clients'),
+  ...makeLifecycleEndpoints<Client>('clients'),
 
   /**
    * Set engagement tier. BE auditing keys off this dedicated endpoint.
@@ -85,48 +61,6 @@ export const clientsApi = {
     return apiClient.post<Client>(
       `/clients/${clientId}/verify?verified_by=${encodeURIComponent(verifiedBy)}`
     )
-  },
-
-  /**
-   * Activate client (requires contact_info)
-   */
-  async activate(clientId: string): Promise<Client> {
-    return apiClient.post<Client>(`/clients/${clientId}/activate`)
-  },
-
-  /**
-   * Deactivate client
-   */
-  async deactivate(clientId: string, reason?: string): Promise<Client> {
-    return apiClient.post<Client>(`/clients/${clientId}/deactivate`, reason != null ? { reason } : undefined)
-  },
-
-  /**
-   * Suspend client (reason required)
-   */
-  async suspend(clientId: string, reason: string): Promise<Client> {
-    return apiClient.post<Client>(`/clients/${clientId}/suspend`, { reason })
-  },
-
-  /**
-   * Terminate client (reason required, permanent)
-   */
-  async terminate(clientId: string, reason: string): Promise<Client> {
-    return apiClient.post<Client>(`/clients/${clientId}/terminate`, { reason })
-  },
-
-  /**
-   * Soft archive client
-   */
-  async archive(clientId: string): Promise<Client> {
-    return apiClient.post<Client>(`/clients/${clientId}/archive`)
-  },
-
-  /**
-   * Restore client from archive
-   */
-  async restore(clientId: string): Promise<Client> {
-    return apiClient.post<Client>(`/clients/${clientId}/restore`)
   },
 
   /**

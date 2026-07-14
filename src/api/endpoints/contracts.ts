@@ -19,27 +19,13 @@ import type {
 } from '@/api/generated'
 
 import apiClient from '../client'
-import type { Contract, ListParams, PaginatedResponse } from '../types'
+import type { Contract } from '../types'
+import { makeCrudEndpoints } from './_factory'
 
 export type { ContractCreate, ContractRenewRequest, ContractTerminateRequest, ContractUpdate }
 
 export const contractsApi = {
-  async create(contractData: ContractCreate): Promise<Contract> {
-    return apiClient.post<Contract>('/contracts', contractData)
-  },
-
-  async getById(contractId: string): Promise<Contract> {
-    return apiClient.get<Contract>(`/contracts/${contractId}`)
-  },
-
-  async list(params?: ListParams): Promise<PaginatedResponse<Contract>> {
-    return apiClient.get<PaginatedResponse<Contract>>('/contracts', params as Record<string, unknown>)
-  },
-
-  /** BE `ContractUpdate` accepts only `{billing_rate?, payment_frequency?, is_auto_renew?}`. */
-  async update(contractId: string, data: ContractUpdate): Promise<Contract> {
-    return apiClient.patch<Contract>(`/contracts/${contractId}`, data)
-  },
+  ...makeCrudEndpoints<Contract, ContractCreate, ContractUpdate>('contracts'),
 
   async activate(contractId: string): Promise<Contract> {
     return apiClient.post<Contract>(`/contracts/${contractId}/activate`, {})

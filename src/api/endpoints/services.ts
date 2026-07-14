@@ -10,40 +10,15 @@
 import type { ServiceCreate, ServiceUpdate, ServiceUpdateGroupSettings } from '@/api/generated'
 
 import apiClient from '../client'
-import type { ListParams, PaginatedResponse, Service } from '../types'
+import type { Service } from '../types'
+import { makeCrudEndpoints } from './_factory'
 
 export type { ServiceCreate, ServiceUpdate, ServiceUpdateGroupSettings }
 /** @deprecated use `ServiceUpdateGroupSettings` from `@/api/generated`. */
 export type GroupSettingsUpdate = ServiceUpdateGroupSettings
 
 export const servicesApi = {
-  /**
-   * Create a new service
-   */
-  async create(serviceData: ServiceCreate): Promise<Service> {
-    return apiClient.post<Service>('/services', serviceData)
-  },
-
-  /**
-   * Get service by ID
-   */
-  async getById(serviceId: string): Promise<Service> {
-    return apiClient.get<Service>(`/services/${serviceId}`)
-  },
-
-  /**
-   * List services
-   */
-  async list(params?: ListParams): Promise<PaginatedResponse<Service>> {
-    return apiClient.get<PaginatedResponse<Service>>('/services', params as Record<string, unknown>)
-  },
-
-  /**
-   * Update service
-   */
-  async update(serviceId: string, data: ServiceUpdate): Promise<Service> {
-    return apiClient.patch<Service>(`/services/${serviceId}`, data)
-  },
+  ...makeCrudEndpoints<Service, ServiceCreate, ServiceUpdate>('services'),
 
   /**
    * Activate service
