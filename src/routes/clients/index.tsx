@@ -104,8 +104,11 @@ function ClientsListPage() {
   const activeTier = searchParams.tier
 
   useEffect(() => {
-    if (searchParams.new) setAddModalOpen(true)
-  }, [searchParams.new])
+    if (searchParams.new) {
+      setAddModalOpen(true)
+      navigate({ search: (prev) => ({ ...prev, new: undefined }), replace: true })
+    }
+  }, [searchParams.new, navigate])
 
   useEffect(() => {
     if (activeSearch !== searchParams.search) {
