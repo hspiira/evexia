@@ -30,6 +30,7 @@ import {
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
 import { nameInitials } from "@/lib/display"
 import { formatDate } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import { CampaignStatusPill } from "@/routes/care-callbacks/index"
 import type {
@@ -51,11 +52,11 @@ function CampaignDetailPage() {
   const { campaignId } = Route.useParams()
   const navigate = useNavigate()
   const campaignQuery = useQuery({
-    queryKey: ["care-callback-campaigns", "detail", campaignId],
+    queryKey: queryKeys.careCallbackCampaigns.detail(campaignId),
     queryFn: () => careCallbacksApi.getCampaign(campaignId),
   })
   const casesQuery = useQuery({
-    queryKey: ["care-callback-cases", "list", { campaign_id: campaignId }],
+    queryKey: queryKeys.careCallbackCases.list({ campaign_id: campaignId }),
     queryFn: () => careCallbacksApi.listCases({ campaign_id: campaignId }),
   })
   const aggregateQuery = useQuery({
@@ -65,7 +66,7 @@ function CampaignDetailPage() {
 
   const clientId = campaignQuery.data?.client_id
   const clientQuery = useQuery({
-    queryKey: ["clients", "detail", clientId ?? ""],
+    queryKey: queryKeys.clients.detail(clientId ?? ""),
     queryFn: () => clientsApi.getById(clientId as string),
     enabled: !!clientId,
   })

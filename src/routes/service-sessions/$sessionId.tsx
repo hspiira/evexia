@@ -40,6 +40,7 @@ import { useToast } from "@/contexts/ToastContext"
 import { useTabSearchParam } from "@/hooks/useTabSearchParam"
 import { displayName, personInitials } from "@/lib/display"
 import { formatDateTime } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type {
   Person,
@@ -149,7 +150,7 @@ function ServiceSessionDetailPage() {
         else if (action === "restore") await serviceSessionsApi.restore(id)
         else if (action === "reschedule") setRescheduleOpen(true)
         await fetchSession()
-        await queryClient.invalidateQueries({ queryKey: ["service-sessions", "list"] })
+        await queryClient.invalidateQueries({ queryKey: queryKeys.serviceSessions.list() })
       } finally {
         setActionLoading(false)
       }
@@ -285,7 +286,7 @@ function ServiceSessionDetailPage() {
           }
           setSession(updated)
           await queryClient.invalidateQueries({
-            queryKey: ["service-sessions", "list"],
+            queryKey: queryKeys.serviceSessions.list(),
           })
           showSuccess("Session rescheduled")
         }}

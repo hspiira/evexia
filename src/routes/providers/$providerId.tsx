@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/contexts/ToastContext"
 import { normalizeErrorMessage } from "@/lib/errors"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type { NonCompeteClause, Provider } from "@/types/entities"
 import {
@@ -30,7 +31,7 @@ function ProviderDetailPage() {
   const [tab, setTab] = useState<Tab>("overview")
 
   const query = useQuery({
-    queryKey: ["providers", "detail", providerId],
+    queryKey: queryKeys.providers.detail(providerId),
     queryFn: () => providersApi.getById(providerId),
     staleTime: 60_000,
   })
@@ -242,7 +243,7 @@ function NonCompetePanel({ provider }: { provider: Provider }) {
 
   const refetch = () => {
     queryClient.invalidateQueries({ queryKey: ["non-compete", "list", provider.id] })
-    queryClient.invalidateQueries({ queryKey: ["providers", "detail", provider.id] })
+    queryClient.invalidateQueries({ queryKey: queryKeys.providers.detail(provider.id) })
   }
 
   if (list.isPending) {

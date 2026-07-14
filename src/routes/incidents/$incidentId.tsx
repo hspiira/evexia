@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { formatDateTime } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import type { IncidentTimelineEvent } from "@/types/entities"
 
 export const Route = createFileRoute("/incidents/$incidentId")({
@@ -21,7 +22,7 @@ function IncidentDetailPage() {
   const { incidentId } = Route.useParams()
 
   const incidentQuery = useQuery({
-    queryKey: ["incidents", "detail", incidentId],
+    queryKey: queryKeys.incidents.detail(incidentId),
     queryFn: () => incidentsApi.getById(incidentId),
   })
   const timelineQuery = useQuery({

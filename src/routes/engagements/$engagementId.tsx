@@ -45,6 +45,7 @@ import { nameInitials } from "@/lib/display"
 import { defaultErrorMessage } from "@/lib/errors"
 import { formatDate, formatDateTime, formatMoney } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import {
   EngagementStatusPill,
@@ -92,7 +93,7 @@ function EngagementDetailPage() {
   const [tab, setTab] = useTabSearchParam<TabValue>(TAB_VALUES, "overview")
 
   const engagementQuery = useQuery({
-    queryKey: ["engagements", "detail", engagementId],
+    queryKey: queryKeys.engagements.detail(engagementId),
     queryFn: () => engagementsApi.getById(engagementId),
   })
   const deliverablesQuery = useQuery({
@@ -110,14 +111,14 @@ function EngagementDetailPage() {
 
   const clientId = engagementQuery.data?.client_id
   const clientQuery = useQuery({
-    queryKey: ["clients", "detail", clientId ?? ""],
+    queryKey: queryKeys.clients.detail(clientId ?? ""),
     queryFn: () => clientsApi.getById(clientId as string),
     enabled: !!clientId,
   })
 
   const leadId = engagementQuery.data?.lead_user_id
   const leadQuery = useQuery({
-    queryKey: ["users", "detail", leadId ?? ""],
+    queryKey: queryKeys.users.detail(leadId ?? ""),
     queryFn: () => usersApi.getById(leadId as string),
     enabled: !!leadId,
   })

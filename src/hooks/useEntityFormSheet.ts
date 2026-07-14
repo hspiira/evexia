@@ -13,7 +13,7 @@
 
 import { useEffect } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { type QueryKey, useQueryClient } from '@tanstack/react-query'
 import type { DefaultValues, FieldValues } from 'react-hook-form'
 import type { ZodType } from 'zod'
 
@@ -38,7 +38,7 @@ export interface UseEntityFormSheetOptions<
   /** Detail id to invalidate after success. Defaults to `entity.id` if `entity` has an id. */
   detailId?: string | null
   /** Additional query keys to invalidate after success (e.g. a parent entity's detail). */
-  extraInvalidations?: Array<{ queryKey: unknown[] }>
+  extraInvalidations?: Array<{ queryKey: QueryKey }>
   onSaved?: (result: TResult) => void
 }
 

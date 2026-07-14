@@ -26,6 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { formatDate, formatDateTime } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type { CallbackCampaign, CallbackCampaignAggregate } from "@/types/entities"
 import { CallbackCampaignStatus } from "@/types/enums"
@@ -236,7 +237,7 @@ function CareCallbackWaveSummary() {
     enabled: !!campaignId,
   })
   const campaignQuery = useQuery({
-    queryKey: ["care-callback-campaigns", "detail", campaignId ?? ""],
+    queryKey: queryKeys.careCallbackCampaigns.detail(campaignId ?? ""),
     queryFn: () => careCallbacksApi.getCampaign(campaignId as string),
     enabled: !!campaignId,
   })

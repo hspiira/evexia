@@ -42,6 +42,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { formatDate } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type { Survey } from "@/types/entities"
 import { SurveyStatus } from "@/types/enums"
@@ -88,7 +89,7 @@ function SurveysListPage() {
   }, [searchParams.new, navigate])
 
   const query = useQuery({
-    queryKey: ["surveys", "list"],
+    queryKey: queryKeys.surveys.list(),
     queryFn: () => surveysApi.list(),
     staleTime: 30_000,
   })

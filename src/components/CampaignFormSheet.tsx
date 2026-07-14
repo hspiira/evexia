@@ -25,6 +25,7 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { useEntityFormSheet } from "@/hooks/useEntityFormSheet"
 import { nameInitials } from "@/lib/display"
 import { useEntityList } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import type { CallbackCampaign, Client, User } from "@/types/entities"
 import {
   CallbackSamplingStrategy,
@@ -98,7 +99,7 @@ export function CampaignFormSheet({
   const lockedClientId = clientId
 
   const questionnairesQuery = useQuery({
-    queryKey: ["questionnaires", "list"],
+    queryKey: queryKeys.questionnaires.list(),
     queryFn: () => questionnairesApi.list(),
     staleTime: 60_000,
   })

@@ -46,4 +46,11 @@ export const queryKeys = {
   serviceAssignments: resourceKeys('service-assignments'),
   serviceSessions: resourceKeys('service-sessions'),
   tenants: resourceKeys('tenants'),
+  providers: resourceKeys('providers'),
+  incidents: resourceKeys('incidents'),
+  surveys: resourceKeys('surveys'),
+  questionnaires: resourceKeys('questionnaires'),
+  nonCompete: resourceKeys('non-compete'),
+  careCallbackCampaigns: resourceKeys('care-callback-campaigns'),
+  careCallbackCases: resourceKeys('care-callback-cases'),
 } as const

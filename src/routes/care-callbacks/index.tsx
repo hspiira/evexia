@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/table"
 import { useCanWrite } from "@/hooks/useCanWrite"
 import { formatDate } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type { CallbackCampaign } from "@/types/entities"
 import { CallbackCampaignStatus } from "@/types/enums"
@@ -96,7 +97,7 @@ function CampaignsListPage() {
   }, [searchParams.new, navigate])
 
   const query = useQuery({
-    queryKey: ["care-callback-campaigns", "list"],
+    queryKey: queryKeys.careCallbackCampaigns.list(),
     queryFn: () => careCallbacksApi.listCampaigns(),
     staleTime: 30_000,
   })

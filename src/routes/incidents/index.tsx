@@ -6,6 +6,7 @@ import { incidentsApi } from "@/api/endpoints/incidents"
 import { SeverityBadge } from "@/components/common/SeverityBadge"
 import { StatusBadge } from "@/components/common/StatusBadge"
 import { formatDateTime } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 
 export const Route = createFileRoute("/incidents/")({
   component: IncidentsListPage,
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/incidents/")({
 
 function IncidentsListPage() {
   const query = useQuery({
-    queryKey: ["incidents", "list"],
+    queryKey: queryKeys.incidents.list(),
     queryFn: () => incidentsApi.list(),
     staleTime: 30_000,
   })

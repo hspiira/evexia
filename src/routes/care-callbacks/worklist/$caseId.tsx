@@ -41,6 +41,7 @@ import { nameInitials } from "@/lib/display"
 import { defaultErrorMessage } from "@/lib/errors"
 import { formatDate, formatDateTime } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/store/slices/authSlice"
 import type { CallbackCase, CallbackOutcome } from "@/types/entities"
@@ -60,7 +61,7 @@ function CaseTriagePage() {
   const userId = useAuthStore((s) => s.user_id) ?? "user-helen"
 
   const caseQuery = useQuery({
-    queryKey: ["care-callback-cases", "detail", caseId],
+    queryKey: queryKeys.careCallbackCases.detail(caseId),
     queryFn: () => careCallbacksApi.getCase(caseId),
   })
   const outcomeQuery = useQuery({
@@ -70,7 +71,7 @@ function CaseTriagePage() {
 
   const campaignId = caseQuery.data?.campaign_id
   const campaignQuery = useQuery({
-    queryKey: ["care-callback-campaigns", "detail", campaignId ?? ""],
+    queryKey: queryKeys.careCallbackCampaigns.detail(campaignId ?? ""),
     queryFn: () => careCallbacksApi.getCampaign(campaignId as string),
     enabled: !!campaignId,
   })
@@ -110,7 +111,7 @@ function CaseTriagePage() {
     mutationFn: () => careCallbacksApi.startCase(caseId),
     detailId: caseId,
     invalidateKeys: campaignId
-      ? [["care-callback-campaigns", "detail", campaignId]]
+      ? [queryKeys.careCallbackCampaigns.detail(campaignId)]
       : [],
     onError: (err) => showError(defaultErrorMessage(err)),
   })
@@ -131,7 +132,7 @@ function CaseTriagePage() {
     detailId: caseId,
     invalidateKeys: campaignId
       ? [
-          ["care-callback-campaigns", "detail", campaignId],
+          queryKeys.careCallbackCampaigns.detail(campaignId),
           ["care-callback-campaigns", "aggregate", campaignId],
         ]
       : [],

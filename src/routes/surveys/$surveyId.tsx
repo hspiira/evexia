@@ -32,6 +32,7 @@ import { nameInitials } from "@/lib/display"
 import { defaultErrorMessage } from "@/lib/errors"
 import { formatDate, formatDateTime } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import { SurveyStatusPill } from "@/routes/surveys/index"
 import type { Client, Survey, SurveyAggregate } from "@/types/entities"
 import { SurveyStatus } from "@/types/enums"
@@ -55,7 +56,7 @@ function SurveyDetailPage() {
   const [tab, setTab] = useTabSearchParam<TabValue>(TAB_VALUES, "overview")
 
   const surveyQuery = useQuery({
-    queryKey: ["surveys", "detail", surveyId],
+    queryKey: queryKeys.surveys.detail(surveyId),
     queryFn: () => surveysApi.getById(surveyId),
   })
   const aggregateQuery = useQuery({
@@ -64,7 +65,7 @@ function SurveyDetailPage() {
   })
   const clientId = surveyQuery.data?.client_id
   const clientQuery = useQuery({
-    queryKey: ["clients", "detail", clientId ?? ""],
+    queryKey: queryKeys.clients.detail(clientId ?? ""),
     queryFn: () => clientsApi.getById(clientId as string),
     enabled: !!clientId,
   })

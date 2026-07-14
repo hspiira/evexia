@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/table"
 import { useCanWrite } from "@/hooks/useCanWrite"
 import { formatDate } from "@/lib/format"
+import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type { Engagement } from "@/types/entities"
 import { EngagementStatus, EngagementType } from "@/types/enums"
@@ -125,7 +126,7 @@ function EngagementsListPage() {
   }, [searchParams.new, navigate])
 
   const query = useQuery({
-    queryKey: ["engagements", "list"],
+    queryKey: queryKeys.engagements.list(),
     queryFn: () => engagementsApi.list(),
     staleTime: 30_000,
   })

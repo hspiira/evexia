@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { useEntityFormSheet } from "@/hooks/useEntityFormSheet"
 import { useEntityList } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import type { Contract, Service, ServiceAssignment } from "@/types/entities"
 
 // Schema mirrors the BE `ServiceAssignmentCreate` (see openapi.json). Active-
@@ -81,7 +82,7 @@ export function ServiceAssignmentFormSheet({
           : serviceAssignmentsApi.create(payload),
       successToast: { create: "Assignment created", update: "Assignment updated" },
       extraInvalidations: lockedContractId
-        ? [{ queryKey: ["contracts", "detail", lockedContractId] }]
+        ? [{ queryKey: queryKeys.contracts.detail(lockedContractId) }]
         : undefined,
       onSaved,
     })

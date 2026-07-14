@@ -23,6 +23,7 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { useEntityFormSheet } from "@/hooks/useEntityFormSheet"
 import { nameInitials } from "@/lib/display"
 import { useEntityList } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import type { Client, Contract } from "@/types/entities"
 import { PaymentFrequency } from "@/types/enums"
 
@@ -146,7 +147,7 @@ export function ContractFormSheet({
       },
       successToast: { create: "Contract created", update: "Contract updated" },
       extraInvalidations: lockedClientId
-        ? [{ queryKey: ["clients", "detail", lockedClientId] }]
+        ? [{ queryKey: queryKeys.clients.detail(lockedClientId) }]
         : undefined,
       onSaved,
     })

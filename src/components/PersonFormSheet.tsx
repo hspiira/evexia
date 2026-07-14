@@ -51,6 +51,7 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { useEntityFormSheet } from "@/hooks/useEntityFormSheet"
 import { nameInitials } from "@/lib/display"
 import { useEntityList } from "@/lib/queries"
+import { queryKeys } from "@/lib/query-keys"
 import { useTenantStore } from "@/store/slices/tenantSlice"
 import type { Client, Person } from "@/types/entities"
 import { Language, PersonType, type RelationType, WorkStatus } from "@/types/enums"
@@ -336,7 +337,7 @@ export function PersonFormSheet({
       },
       successToast: { create: "Person created", update: "Person updated" },
       extraInvalidations: lockedClientId
-        ? [{ queryKey: ["clients", "detail", lockedClientId] }]
+        ? [{ queryKey: queryKeys.clients.detail(lockedClientId) }]
         : undefined,
       onSaved,
     })
