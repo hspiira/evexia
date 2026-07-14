@@ -44,6 +44,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useCanWrite } from "@/hooks/useCanWrite"
+import { formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { CallbackCampaign } from "@/types/entities"
 import { CallbackCampaignStatus } from "@/types/enums"
@@ -280,9 +281,9 @@ function CampaignRow({ row }: { row: CallbackCampaign }) {
         <CampaignStatusPill status={row.status} />
       </TableCell>
       <TableCell className="text-sm text-fg/75">
-        {new Date(row.period_start).toLocaleDateString()}
+        {formatDate(row.period_start)}
         <span className="text-fg/40"> – </span>
-        {new Date(row.period_end).toLocaleDateString()}
+        {formatDate(row.period_end)}
       </TableCell>
       <TableCell className="font-mono text-xs text-fg/75">
         {row.counsellor_user_ids.length}

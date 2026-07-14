@@ -47,6 +47,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
+import { nameInitials } from "@/lib/display"
 import { normalizeErrorMessage } from "@/lib/errors"
 import { useEntityList } from "@/lib/queries"
 import type { Client } from "@/types/entities"
@@ -299,7 +300,7 @@ function ClientRow({ row }: { row: Client }) {
             aria-hidden
             className="grid size-6 shrink-0 place-items-center bg-primary/10 font-mono text-[10px] font-semibold text-primary"
           >
-            {initial(row.name)}
+            {nameInitials(row.name)}
           </span>
           <span className="text-sm font-medium text-fg group-hover:text-primary">
             {row.name}
@@ -366,12 +367,3 @@ function ClientRow({ row }: { row: Client }) {
   )
 }
 
-function initial(name: string): string {
-  const trimmed = name.trim()
-  if (!trimmed) return "·"
-  const parts = trimmed.split(/\s+/)
-  if (parts.length >= 2) {
-    return (parts[0][0] + parts[1][0]).toUpperCase()
-  }
-  return trimmed.slice(0, 2).toUpperCase()
-}

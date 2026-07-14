@@ -43,6 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useCanWrite } from "@/hooks/useCanWrite"
+import { formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { Engagement } from "@/types/entities"
 import { EngagementStatus, EngagementType } from "@/types/enums"
@@ -349,7 +350,7 @@ function EngagementRow({ row }: { row: Engagement }) {
               {row.name}
             </span>
             <span className="block truncate text-xs text-fg/55">
-              Started {new Date(row.start_date).toLocaleDateString()}
+              Started {formatDate(row.start_date)}
             </span>
           </span>
         </Link>
@@ -370,7 +371,7 @@ function EngagementRow({ row }: { row: Engagement }) {
       </TableCell>
       <TableCell className="text-xs text-fg/75">{row.engagement_type}</TableCell>
       <TableCell className="text-sm text-fg/75">
-        {row.due_date ? new Date(row.due_date).toLocaleDateString() : "—"}
+        {row.due_date ? formatDate(row.due_date) : "—"}
       </TableCell>
       <TableCell>
         <div className="min-w-32">

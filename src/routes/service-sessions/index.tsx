@@ -47,6 +47,7 @@ import {
 import { useCanWrite } from "@/hooks/useCanWrite"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { normalizeErrorMessage } from "@/lib/errors"
+import { formatDate } from "@/lib/format"
 import { useEntityList } from "@/lib/queries"
 import type { ServiceSession } from "@/types/entities"
 import { SessionStatus } from "@/types/enums"
@@ -327,7 +328,7 @@ function ServiceSessionsListPage() {
 
 function SessionRow({ row }: { row: ServiceSession }) {
   const scheduled = new Date(row.scheduled_at)
-  const dateLabel = scheduled.toLocaleDateString()
+  const dateLabel = formatDate(scheduled)
   const timeLabel = scheduled.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   return (
     <TableRow className={`group cursor-default ${ROW_BORDER}`}>

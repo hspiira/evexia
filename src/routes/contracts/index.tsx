@@ -48,6 +48,7 @@ import {
 import { useCanWrite } from "@/hooks/useCanWrite"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { normalizeErrorMessage } from "@/lib/errors"
+import { formatMoney } from "@/lib/format"
 import { useEntityList } from "@/lib/queries"
 import type { Contract } from "@/types/entities"
 import { ContractStatus } from "@/types/enums"
@@ -411,7 +412,7 @@ function formatBilling(c: Contract): { amount: string; frequency: string } | nul
   if (c.billing_amount == null && !c.billing_frequency) return null
   const amount =
     c.billing_amount != null
-      ? `${c.currency ?? ""} ${c.billing_amount.toLocaleString()}`.trim()
+      ? formatMoney(c.billing_amount, c.currency)
       : "—"
   const frequency = c.billing_frequency ?? "—"
   return { amount, frequency }

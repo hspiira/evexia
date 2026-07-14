@@ -41,6 +41,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { formatDate } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import type { Survey } from "@/types/entities"
 import { SurveyStatus } from "@/types/enums"
@@ -248,9 +249,9 @@ function SurveyRow({ row }: { row: Survey }) {
         <SurveyStatusPill status={row.status} />
       </TableCell>
       <TableCell className="text-sm text-fg/75">
-        {new Date(row.period_start).toLocaleDateString()}
+        {formatDate(row.period_start)}
         <span className="text-fg/40"> – </span>
-        {new Date(row.period_end).toLocaleDateString()}
+        {formatDate(row.period_end)}
       </TableCell>
       <TableCell className="text-xs text-fg/75">{row.source}</TableCell>
       <TableCell className="font-mono text-xs text-fg/75">{row.response_count}</TableCell>

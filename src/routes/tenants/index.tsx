@@ -42,6 +42,7 @@ import {
 } from '@/components/ui/table'
 import { useDebouncedValue } from '@/hooks/useDebouncedValue'
 import { normalizeErrorMessage } from '@/lib/errors'
+import { formatDateTime } from "@/lib/format"
 import { useEntityList } from '@/lib/queries'
 import type { Tenant } from '@/types/entities'
 import { TenantStatus } from '@/types/enums'
@@ -322,7 +323,7 @@ function AdminCredentialsDialog({
                 </dd>
                 {creds.set_password_expires_at ? (
                   <p className="mt-1 text-xs text-fg-muted">
-                    Expires {new Date(creds.set_password_expires_at).toLocaleString()}
+                    Expires {formatDateTime(creds.set_password_expires_at)}
                   </p>
                 ) : null}
               </div>

@@ -44,3 +44,15 @@ export function personInitials(person: Person, user?: User | null): string {
   if (parts[0]?.length >= 2) return parts[0].slice(0, 2).toUpperCase()
   return parts[0]?.[0]?.toUpperCase() ?? '·'
 }
+
+/**
+ * Initials from a display-name string, for avatar placeholders where the entity
+ * is not a Person (client, contract, service, campaign, …).
+ */
+export function nameInitials(name: string): string {
+  const trimmed = name.trim()
+  if (!trimmed) return '·'
+  const parts = trimmed.split(/\s+/)
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
+  return trimmed.slice(0, 2).toUpperCase()
+}
