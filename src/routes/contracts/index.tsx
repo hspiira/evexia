@@ -50,40 +50,16 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { normalizeErrorMessage } from "@/lib/errors"
 import { formatMoney } from "@/lib/format"
 import { useEntityList } from "@/lib/queries"
+import { enumOptions, enumParam, listSearchSchema } from "@/lib/search-params"
 import type { Contract } from "@/types/entities"
 import { ContractStatus } from "@/types/enums"
 
-function isStatus(value: unknown): value is ContractStatus {
-  return (
-    value === ContractStatus.ACTIVE ||
-    value === ContractStatus.PENDING ||
-    value === ContractStatus.DRAFT ||
-    value === ContractStatus.EXPIRED ||
-    value === ContractStatus.RENEWED ||
-    value === ContractStatus.TERMINATED
-  )
-}
-
 export const Route = createFileRoute("/contracts/")({
   component: ContractsListPage,
-  validateSearch: (search: Record<string, unknown>) => {
-    const out: { new?: boolean; search?: string; status?: ContractStatus } = {}
-    if (search.new === "1" || search.new === true) out.new = true
-    if (typeof search.search === "string" && search.search.trim()) out.search = search.search
-    if (isStatus(search.status)) out.status = search.status
-    return out
-  },
+  validateSearch: listSearchSchema({ status: enumParam(ContractStatus) }),
 })
 
-const STATUS_OPTIONS = [
-  { value: "all", label: "All statuses" },
-  { value: ContractStatus.ACTIVE, label: "Active" },
-  { value: ContractStatus.PENDING, label: "Pending" },
-  { value: ContractStatus.DRAFT, label: "Draft" },
-  { value: ContractStatus.EXPIRED, label: "Expired" },
-  { value: ContractStatus.RENEWED, label: "Renewed" },
-  { value: ContractStatus.TERMINATED, label: "Terminated" },
-] as const
+const STATUS_OPTIONS = enumOptions(ContractStatus, "All statuses")
 
 const RENEWAL_OPTIONS = [
   { value: "all", label: "All renewal windows" },
