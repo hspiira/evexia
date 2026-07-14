@@ -15,6 +15,7 @@ import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/componen
 import { EmptyState } from "@/components/common/EmptyState"
 import { PageShell } from "@/components/common/PageShell"
 import { DetailSkeleton } from "@/components/common/PageSkeletons"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { Tab, TabPanel, Tabs, TabsList } from "@/components/common/Tabs"
 import { WebhookSetupHelper } from "@/components/surveys/WebhookSetupHelper"
 import { Button } from "@/components/ui/button"
@@ -33,7 +34,6 @@ import { defaultErrorMessage } from "@/lib/errors"
 import { formatDate, formatDateTime } from "@/lib/format"
 import { useEntityMutation } from "@/lib/queries"
 import { queryKeys } from "@/lib/query-keys"
-import { SurveyStatusPill } from "@/routes/surveys/index"
 import type { Client, Survey, SurveyAggregate } from "@/types/entities"
 import { SurveyStatus } from "@/types/enums"
 
@@ -201,7 +201,7 @@ function SurveyDetailPage() {
                       />
                       <DetailRow
                         label="Status"
-                        value={<SurveyStatusPill status={survey.status} />}
+                        value={<StatusBadge status={survey.status} />}
                       />
                       <DetailRow label="Source" value={survey.source} />
                     </DetailGrid>
@@ -308,7 +308,7 @@ function Hero({ survey, client }: { survey: Survey; client: Client | null }) {
         </Link>
       ) : null}
       <span className="h-4 w-px shrink-0 bg-fg/15" aria-hidden />
-      <SurveyStatusPill status={survey.status} />
+      <StatusBadge status={survey.status} />
       <span className="font-mono text-xs text-fg/55">{survey.source}</span>
     </div>
   )

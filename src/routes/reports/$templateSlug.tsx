@@ -16,6 +16,7 @@ import { careCallbacksApi } from "@/api/endpoints/care-callbacks"
 import { K_ANON_FLOOR } from "@/api/endpoints/care-callbacks-fixture"
 import { EmptyState } from "@/components/common/EmptyState"
 import { PageShell } from "@/components/common/PageShell"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -29,7 +30,6 @@ import { formatDate, formatDateTime } from "@/lib/format"
 import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import type { CallbackCampaign, CallbackCampaignAggregate } from "@/types/entities"
-import { CallbackCampaignStatus } from "@/types/enums"
 
 import { type RenewalPackData, renewalPackFixture } from "./renewal-pack-fixture"
 
@@ -335,7 +335,7 @@ function WaveSummaryBody({
         </p>
         <div className="mt-1 flex flex-wrap items-baseline gap-3">
           <h2 className="text-2xl font-semibold text-fg">{campaign.name}</h2>
-          <CampaignStatusPill status={campaign.status} />
+          <StatusBadge status={campaign.status} />
         </div>
         {campaign.description ? (
           <p className="mt-2 max-w-2xl text-sm text-fg/65">{campaign.description}</p>
@@ -458,27 +458,6 @@ function WaveSummaryBody({
         {formatDateTime(Date.now())}.
       </footer>
     </>
-  )
-}
-
-function CampaignStatusPill({ status }: { status: CallbackCampaignStatus }) {
-  const tone =
-    status === CallbackCampaignStatus.ACTIVE
-      ? "border-primary/30 bg-primary/10 text-primary"
-      : status === CallbackCampaignStatus.CANCELLED
-        ? "border-danger/30 bg-danger-soft text-danger-fg"
-        : status === CallbackCampaignStatus.COMPLETED
-          ? "border-fg/15 bg-bg text-fg/65 print:bg-white"
-          : "border-fg/20 bg-bg text-fg print:bg-white"
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-sm border px-1.5 py-0.5 text-[11px] font-medium",
-        tone,
-      )}
-    >
-      {status}
-    </span>
   )
 }
 

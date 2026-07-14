@@ -17,6 +17,7 @@ import { DetailCard, DetailGrid, DetailRow, RailSection, Stat } from "@/componen
 import { EmptyState } from "@/components/common/EmptyState"
 import { PageShell } from "@/components/common/PageShell"
 import { DetailSkeleton } from "@/components/common/PageSkeletons"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { Tab, TabPanel, Tabs, TabsList } from "@/components/common/Tabs"
 import { Button } from "@/components/ui/button"
 import {
@@ -32,7 +33,6 @@ import { nameInitials } from "@/lib/display"
 import { formatDate } from "@/lib/format"
 import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
-import { CampaignStatusPill } from "@/routes/care-callbacks/index"
 import type {
   CallbackCampaign,
   CallbackCampaignAggregate,
@@ -219,7 +219,7 @@ function CampaignDetail({
                       />
                       <DetailRow
                         label="Status"
-                        value={<CampaignStatusPill status={campaign.status} />}
+                        value={<StatusBadge status={campaign.status} />}
                       />
                       <DetailRow
                         label="Sampling"
@@ -360,7 +360,7 @@ function Hero({
         </Link>
       ) : null}
       <span className="h-4 w-px shrink-0 bg-fg/15" aria-hidden />
-      <CampaignStatusPill status={campaign.status} />
+      <StatusBadge status={campaign.status} />
     </div>
   )
 }

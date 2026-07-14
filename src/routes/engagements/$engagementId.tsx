@@ -21,6 +21,7 @@ import { EmptyState } from "@/components/common/EmptyState"
 import { FormField } from "@/components/common/FormField"
 import { PageShell } from "@/components/common/PageShell"
 import { DetailSkeleton } from "@/components/common/PageSkeletons"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { Tab, TabPanel, Tabs, TabsList } from "@/components/common/Tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -48,7 +49,6 @@ import { useEntityMutation } from "@/lib/queries"
 import { queryKeys } from "@/lib/query-keys"
 import { cn } from "@/lib/utils"
 import {
-  EngagementStatusPill,
   isOverdue,
 } from "@/routes/engagements/index"
 import { useAuthStore } from "@/store/slices/authSlice"
@@ -237,7 +237,7 @@ function EngagementDetailPage() {
                       <DetailRow label="Type" value={engagement.engagement_type} />
                       <DetailRow
                         label="Status"
-                        value={<EngagementStatusPill status={engagement.status} />}
+                        value={<StatusBadge status={engagement.status} />}
                       />
                     </DetailGrid>
                   </DetailCard>
@@ -423,7 +423,7 @@ function Hero({
       ) : null}
       <span className="font-mono text-xs text-fg/55">{engagement.engagement_type}</span>
       <span className="h-4 w-px shrink-0 bg-fg/15" aria-hidden />
-      <EngagementStatusPill status={engagement.status} />
+      <StatusBadge status={engagement.status} />
       {overdue ? (
         <span className="inline-flex items-center gap-1 rounded-sm border border-amber-500/40 bg-amber-500/10 px-1.5 py-0.5 text-[11px] font-medium text-amber-600">
           <AlertTriangle className="size-3" />

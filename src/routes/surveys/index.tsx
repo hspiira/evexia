@@ -23,6 +23,7 @@ import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
 import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { ROW_BORDER } from "@/components/common/tableStyles"
 import { SurveyFormSheet } from "@/components/SurveyFormSheet"
 import { Button } from "@/components/ui/button"
@@ -43,7 +44,6 @@ import {
 } from "@/components/ui/table"
 import { formatDate } from "@/lib/format"
 import { queryKeys } from "@/lib/query-keys"
-import { cn } from "@/lib/utils"
 import type { Survey } from "@/types/entities"
 import { SurveyStatus } from "@/types/enums"
 
@@ -247,7 +247,7 @@ function SurveyRow({ row }: { row: Survey }) {
         </Link>
       </TableCell>
       <TableCell>
-        <SurveyStatusPill status={row.status} />
+        <StatusBadge status={row.status} />
       </TableCell>
       <TableCell className="text-sm text-fg/75">
         {formatDate(row.period_start)}
@@ -282,33 +282,6 @@ function SurveyRow({ row }: { row: Survey }) {
       </TableCell>
     </TableRow>
   )
-}
-
-export function SurveyStatusPill({ status }: { status: SurveyStatus }) {
-  const tone = statusTone(status)
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-sm border px-1.5 py-0.5 text-[11px] font-medium",
-        tone,
-      )}
-    >
-      {status}
-    </span>
-  )
-}
-
-function statusTone(status: SurveyStatus): string {
-  switch (status) {
-    case SurveyStatus.COLLECTING:
-      return "border-primary/30 bg-primary/10 text-primary"
-    case SurveyStatus.DRAFT:
-      return "border-fg/20 bg-bg text-fg"
-    case SurveyStatus.CLOSED:
-      return "border-fg/15 bg-bg text-fg/60"
-    default:
-      return "border-fg/15 bg-bg text-fg/65"
-  }
 }
 
 function filterAndSort(

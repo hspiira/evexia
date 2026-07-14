@@ -26,6 +26,7 @@ import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
 import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { ROW_BORDER } from "@/components/common/tableStyles"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -46,7 +47,6 @@ import {
 import { useCanWrite } from "@/hooks/useCanWrite"
 import { formatDate } from "@/lib/format"
 import { queryKeys } from "@/lib/query-keys"
-import { cn } from "@/lib/utils"
 import type { CallbackCampaign } from "@/types/entities"
 import { CallbackCampaignStatus } from "@/types/enums"
 
@@ -279,7 +279,7 @@ function CampaignRow({ row }: { row: CallbackCampaign }) {
         </Link>
       </TableCell>
       <TableCell>
-        <CampaignStatusPill status={row.status} />
+        <StatusBadge status={row.status} />
       </TableCell>
       <TableCell className="text-sm text-fg/75">
         {formatDate(row.period_start)}
@@ -334,35 +334,6 @@ function CampaignRow({ row }: { row: CallbackCampaign }) {
       </TableCell>
     </TableRow>
   )
-}
-
-export function CampaignStatusPill({ status }: { status: CallbackCampaignStatus }) {
-  const tone = statusTone(status)
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-sm border px-1.5 py-0.5 text-[11px] font-medium",
-        tone,
-      )}
-    >
-      {status}
-    </span>
-  )
-}
-
-function statusTone(status: CallbackCampaignStatus): string {
-  switch (status) {
-    case CallbackCampaignStatus.ACTIVE:
-      return "border-primary/30 bg-primary/10 text-primary"
-    case CallbackCampaignStatus.SCHEDULED:
-      return "border-fg/20 bg-bg text-fg"
-    case CallbackCampaignStatus.COMPLETED:
-      return "border-fg/15 bg-bg text-fg/60"
-    case CallbackCampaignStatus.CANCELLED:
-      return "border-danger/30 bg-danger-soft text-danger-fg"
-    default:
-      return "border-fg/15 bg-bg text-fg/65"
-  }
 }
 
 function filterAndSort(

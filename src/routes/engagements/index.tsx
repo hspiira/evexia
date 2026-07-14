@@ -24,6 +24,7 @@ import { IconButton } from "@/components/common/IconButton"
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
 import { nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
+import { StatusBadge } from "@/components/common/StatusBadge"
 import { ROW_BORDER } from "@/components/common/tableStyles"
 import { EngagementFormSheet } from "@/components/EngagementFormSheet"
 import { Button } from "@/components/ui/button"
@@ -358,7 +359,7 @@ function EngagementRow({ row }: { row: Engagement }) {
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-1.5">
-          <EngagementStatusPill status={row.status} />
+          <StatusBadge status={row.status} />
           {overdue ? (
             <span
               title="Past due date and not yet delivered"
@@ -437,37 +438,6 @@ function EngagementRow({ row }: { row: Engagement }) {
       </TableCell>
     </TableRow>
   )
-}
-
-export function EngagementStatusPill({ status }: { status: EngagementStatus }) {
-  const tone = statusTone(status)
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-sm border px-1.5 py-0.5 text-[11px] font-medium",
-        tone,
-      )}
-    >
-      {status}
-    </span>
-  )
-}
-
-function statusTone(status: EngagementStatus): string {
-  switch (status) {
-    case EngagementStatus.ACTIVE:
-      return "border-primary/30 bg-primary/10 text-primary"
-    case EngagementStatus.SCOPING:
-      return "border-fg/20 bg-bg text-fg"
-    case EngagementStatus.DELIVERED:
-      return "border-amber-500/40 bg-amber-500/10 text-amber-600"
-    case EngagementStatus.CLOSED:
-      return "border-fg/15 bg-bg text-fg/60"
-    case EngagementStatus.CANCELLED:
-      return "border-danger/30 bg-danger-soft text-danger-fg"
-    default:
-      return "border-fg/15 bg-bg text-fg/65"
-  }
 }
 
 export function isOverdue(
