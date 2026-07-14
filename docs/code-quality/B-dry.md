@@ -7,7 +7,28 @@ stated. Line numbers as of 2026-07-14 (`main` @ `066f1db`).
 
 ## CQ-B01 — `useListPage` hook + `EntityListView`: kill the list-page template
 
-**Severity:** 🟠 High · **Effort:** L · **Status:** ⬜ Todo · **Owner:** — · **PR:** — · **Depends on:** CQ-B06, CQ-B09
+**Severity:** 🟠 High · **Effort:** L · **Status:** 🟨 In progress · **Owner:** Claude · **PR:** `ddcbb46`, `859cb3f` · **Depends on:** CQ-B06, CQ-B09
+
+> Done: `hooks/useListPage.ts` (page/sort/debounced-search state, `?new=1` strip + search→URL sync
+> effects, `useEntityList` query) and `components/common/EntityListView.tsx` (loading/error/empty/
+> table/pagination shell with sticky sortable header; rows bespoke via `renderRow`). Migrated
+> **contracts, users, services** as references. Build passes on each.
+>
+> **Recipe for the remaining ~8 pages** (persons, clients, service-sessions, service-assignments,
+> tags, care-callbacks, engagements, surveys, tenants, providers, incidents, industries):
+> 1. `validateSearch: listSearchSchema({ status: enumParam(SomeEnum) })`; `STATUS_OPTIONS =
+>    enumOptions(Enum, "All statuses")` — **but keep a curated array if the enum has members that
+>    shouldn't be user filters** (e.g. `BaseStatus.Deleted`, see services).
+> 2. Replace the state/effects/query block with `useListPage<T>({ from, resource, listFn,
+>    extraParams: { status } })`; keep the page's own `useSearch`/`useNavigate` for the typed filter param.
+> 3. Define `const COLUMNS: ListColumn[]` and swap the shell for `<EntityListView>`; pass
+>    `skeletonCols` to match the old `TableSkeleton cols={n}`.
+> 4. `eslint --fix` to drop now-unused imports; `tsc` + `vite build` to verify.
+>
+> **Note:** engagements/care-callbacks/surveys use the client-driven `useQuery`+`filterAndSort`
+> pattern (not `useEntityList`) — they need the CQ-A09 convergence first, or a `useListPage` variant
+> that accepts a client-side sorter. The paginate-then-filter bugs (CQ-A04) should be fixed as each
+> page with a client-side secondary filter is migrated.
 
 **Problem.** One ~400-line list-page template is copy-pasted across ~12 entities (≈60% of ~7,000
 lines across 17 list pages). Each page independently re-implements: state block

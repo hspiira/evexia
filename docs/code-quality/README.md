@@ -43,7 +43,7 @@
 
 | ID | Title | Severity | Effort | Depends on | Status | Owner | PR |
 |----|-------|----------|--------|------------|--------|-------|----|
-| CQ-B01 | `useListPage` hook + `EntityListView` — kill the ~400-line list-page template (~12 pages) | 🟠 High | L | CQ-B06, CQ-B09 | ⬜ | | |
+| CQ-B01 | `useListPage` hook + `EntityListView` — kill the ~400-line list-page template (~12 pages) | 🟠 High | L | CQ-B06, CQ-B09 | 🟨 | Claude | `ddcbb46`, `859cb3f` |
 | CQ-B02 | Extract `DetailPrimitives` (`DetailCard`/`RailSection`/`Stat`/`DetailGrid`/`DetailRow`) — 10+ copies | 🟠 High | S | — | ✅ | Claude | `a72df1f` |
 | CQ-B03 | Generic `EntityPicker<T>` + `LockedEntitySummary` — 9 picker copies (~1,250 lines) | 🟠 High | M | CQ-A05 | ⬜ | | |
 | CQ-B04 | `EntityDetailPage` scaffold — loading/not-found/header/hero/8-4 grid chrome (11+ pages) | 🟠 High | L | CQ-B02, CQ-B08 | ⬜ | | |
