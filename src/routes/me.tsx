@@ -11,7 +11,6 @@ import { AtRiskPage } from '@/components/AtRiskPage'
 import { FormField } from '@/components/common/FormField'
 import { PageShell } from '@/components/common/PageShell'
 import { DetailSkeleton } from '@/components/common/PageSkeletons'
-import { RequireAuth } from '@/components/common/RequireAuth'
 import { StatusBadge } from '@/components/common/StatusBadge'
 import { InboxPage } from '@/components/InboxPage'
 import { Button } from '@/components/ui/button'
@@ -39,7 +38,7 @@ export const Route = createFileRoute('/me')({
     const v = search.view
     return v === 'inbox' || v === 'at-risk' ? { view: v } : {}
   },
-  component: MePage,
+  component: MeBody,
 })
 
 const preferencesSchema = z.object({
@@ -60,14 +59,6 @@ const LANGUAGES: ReadonlyArray<{ value: Language; label: string }> = [
   { value: Language.JA, label: '日本語' },
   { value: Language.KO, label: '한국어' },
 ]
-
-function MePage() {
-  return (
-    <RequireAuth redirectAfterLogin="/me">
-      <MeBody />
-    </RequireAuth>
-  )
-}
 
 const VIEW_META: Record<MeView, { label: string; icon: React.ElementType; component: React.ComponentType }> = {
   'inbox': { label: 'Inbox', icon: Inbox, component: InboxPage },

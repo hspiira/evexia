@@ -16,7 +16,6 @@ import {
 } from "@/components/common/FilterBar"
 import { PageShell } from "@/components/common/PageShell"
 import { TableSkeleton } from "@/components/common/PageSkeletons"
-import { RequireClinicalScope } from "@/components/common/RequireClinicalScope"
 import { compareSort, nextSort, SortHeader, type SortState } from "@/components/common/SortHeader"
 import { StatusBadge } from "@/components/common/StatusBadge"
 import { Button } from "@/components/ui/button"
@@ -35,11 +34,7 @@ import { CaseStatus, PresentingProblem } from "@/types/enums"
 import { CasePresentingProblemLabel, CaseReferralSourceLabel } from "@/utils/caseLabels"
 
 export const Route = createFileRoute("/cases/")({
-  component: () => (
-    <RequireClinicalScope>
-      <CasesListPage />
-    </RequireClinicalScope>
-  ),
+  component: CasesListPage,
   validateSearch: listSearchSchema({
     status: enumParam(CaseStatus),
     presenting_problem: enumParam(PresentingProblem),

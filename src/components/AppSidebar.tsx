@@ -42,7 +42,13 @@ import {
 } from "@/components/ui/tooltip"
 import { useHasClinicalScope } from "@/hooks/useCanWrite"
 import { type FeatureFlag, featureFlags } from "@/lib/featureFlags"
+import {
+  type AccessContext,
+  canAccessPath,
+  isPlatformAdminTenant,
+} from "@/lib/route-access"
 import { cn } from "@/lib/utils"
+import { useAuthStore } from "@/store/slices/authSlice"
 import { useTenantStore } from "@/store/slices/tenantSlice"
 
 const PROJECT_LOGO = "/evexi%CC%81a.svg"
@@ -53,13 +59,6 @@ type NavItem = {
   icon: React.ElementType
   iconClassName?: string
   flag?: FeatureFlag
-  platformAdmin?: boolean
-  /** Requires the Clinical access scope — hidden entirely otherwise (privacy wall). */
-  clinicalScope?: boolean
-}
-
-function platformTenantId(): string {
-  return (import.meta.env.VITE_PLATFORM_TENANT_ID ?? "").trim()
 }
 
 /** Quick-access items — always visible at the top, no label. */
@@ -73,7 +72,7 @@ const MAIN_ITEMS: ReadonlyArray<NavItem> = [
   { to: "/persons", label: "Persons", icon: Users },
   { to: "/contacts", label: "Contacts", icon: Users, flag: "contacts" },
   { to: "/service-sessions", label: "Sessions", icon: Calendar },
-  { to: "/cases", label: "Cases", icon: HeartPulse, clinicalScope: true },
+  { to: "/cases", label: "Cases", icon: HeartPulse },
   { to: "/care-callbacks", label: "Campaigns", icon: PhoneCall },
   { to: "/care-callbacks/worklist", label: "My Worklist", icon: Headphones },
   { to: "/surveys", label: "Surveys", icon: MessageSquare },
@@ -92,21 +91,32 @@ const SETTINGS_ITEMS: ReadonlyArray<NavItem> = [
   { to: "/users", label: "Platform Users", icon: UserCog },
   { to: "/audit", label: "Audits", icon: ClipboardCheck, flag: "audit" },
   { to: "/activities", label: "Activity Logs", icon: Activity, flag: "activities" },
-  { to: "/tenants", label: "Tenants", icon: ShieldCheck, platformAdmin: true },
+  { to: "/tenants", label: "Tenants", icon: ShieldCheck },
 ]
 
-function isItemEnabled(
-  item: NavItem,
-  currentTenantId: string | null,
-  hasClinicalScope: boolean,
-): boolean {
+/** Visible when the feature flag is on and the session can reach the path. */
+function isItemEnabled(item: NavItem, ctx: AccessContext): boolean {
   if (item.flag && !featureFlags[item.flag]) return false
-  if (item.platformAdmin) {
-    const required = platformTenantId()
-    if (required && currentTenantId !== required) return false
+  return canAccessPath(item.to, ctx)
+}
+
+function useAccessContext(): AccessContext {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const currentTenantId = useTenantStore((s) => s.currentTenantId)
+  const { hasScope } = useHasClinicalScope()
+  return {
+    isAuthenticated,
+    hasClinicalScope: hasScope,
+    isPlatformAdmin: isPlatformAdminTenant(currentTenantId),
   }
-  if (item.clinicalScope && !hasClinicalScope) return false
-  return true
+}
+
+function useVisibleNavItems() {
+  const ctx = useAccessContext()
+  return {
+    mainItems: MAIN_ITEMS.filter((i) => isItemEnabled(i, ctx)),
+    settingsItems: SETTINGS_ITEMS.filter((i) => isItemEnabled(i, ctx)),
+  }
 }
 
 function toProperCase(s: string): string {
@@ -186,11 +196,7 @@ function NavItem({
 
 function ExpandedSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
-  const currentTenantId = useTenantStore((s) => s.currentTenantId)
-  const { hasScope: hasClinicalScope } = useHasClinicalScope()
-
-  const mainItems = MAIN_ITEMS.filter((i) => isItemEnabled(i, currentTenantId, hasClinicalScope))
-  const settingsItems = SETTINGS_ITEMS.filter((i) => isItemEnabled(i, currentTenantId, hasClinicalScope))
+  const { mainItems, settingsItems } = useVisibleNavItems()
   const allTos = [...TOP_ITEMS, ...mainItems, ...settingsItems].map((i) => i.to)
   const active = (to: string) => resolveActive(pathname, to, allTos)
 
@@ -325,11 +331,7 @@ function CollapsedHeader() {
 
 function CollapsedSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
-  const currentTenantId = useTenantStore((s) => s.currentTenantId)
-  const { hasScope: hasClinicalScope } = useHasClinicalScope()
-
-  const mainItems = MAIN_ITEMS.filter((i) => isItemEnabled(i, currentTenantId, hasClinicalScope))
-  const settingsItems = SETTINGS_ITEMS.filter((i) => isItemEnabled(i, currentTenantId, hasClinicalScope))
+  const { mainItems, settingsItems } = useVisibleNavItems()
   const allTos = [...TOP_ITEMS, ...mainItems, ...settingsItems].map((i) => i.to)
   const active = (to: string) => resolveActive(pathname, to, allTos)
 

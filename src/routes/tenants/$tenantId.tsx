@@ -11,7 +11,6 @@ import { tenantsApi } from '@/api/endpoints/tenants'
 import { AppLayout } from '@/components/AppLayout'
 import { PageShell } from '@/components/common/PageShell'
 import { DetailSkeleton } from '@/components/common/PageSkeletons'
-import { RequirePlatformAdmin } from '@/components/common/RequirePlatformAdmin'
 import { TenantFormSheet } from '@/components/TenantFormSheet'
 import {
   AzureSsoCard,
@@ -28,14 +27,6 @@ export const Route = createFileRoute('/tenants/$tenantId')({
 })
 
 function TenantDetailPage() {
-  return (
-    <RequirePlatformAdmin>
-      <TenantDetailBody />
-    </RequirePlatformAdmin>
-  )
-}
-
-function TenantDetailBody() {
   const { tenantId } = Route.useParams()
   const [editOpen, setEditOpen] = useState(false)
 

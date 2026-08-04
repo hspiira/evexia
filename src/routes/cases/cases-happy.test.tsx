@@ -43,13 +43,6 @@ vi.mock('@/api/endpoints/cases', () => ({
   },
 }))
 
-// This test covers the list rendering, not the auth/scope gate — those are
-// their own concern. Render children directly, the way the other happy-path
-// tests exercise their (ungated) list pages.
-vi.mock('@/components/common/RequireClinicalScope', () => ({
-  RequireClinicalScope: ({ children }: { children?: React.ReactNode }) => children,
-}))
-
 const { Route } = await import('@/routes/cases/index')
 const Page = (Route as unknown as { options: { component: React.ComponentType } })
   .options.component

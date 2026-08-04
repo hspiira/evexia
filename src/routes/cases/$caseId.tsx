@@ -19,7 +19,6 @@ import {
 } from "@/components/cases/CaseDetailWidgets"
 import { renderDetailState } from "@/components/common/DetailStates"
 import { PageShell } from "@/components/common/PageShell"
-import { RequireClinicalScope } from "@/components/common/RequireClinicalScope"
 import { Tab, TabPanel, Tabs, TabsList } from "@/components/common/Tabs"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/contexts/ToastContext"
@@ -29,11 +28,7 @@ import { entityDetailKey, useEntityDetail } from "@/lib/queries"
 import type { CaseClosureReason, CaseStatus, ClinicalNoteType } from "@/types/enums"
 
 export const Route = createFileRoute("/cases/$caseId")({
-  component: () => (
-    <RequireClinicalScope>
-      <CaseDetailPage />
-    </RequireClinicalScope>
-  ),
+  component: CaseDetailPage,
 })
 
 type TabValue = "overview" | "notes"
