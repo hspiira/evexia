@@ -76,7 +76,7 @@
     "openapi-typescript": "^7.13.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^7.1.7",
+    "vite": "^7.3.5",
     "vitest": "^3.0.5",
     "vitest-axe": "^0.1.0"
   }
