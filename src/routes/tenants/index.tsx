@@ -18,7 +18,6 @@ import {
 } from '@/components/common/FilterBar'
 import { PageShell } from '@/components/common/PageShell'
 import { TableSkeleton } from '@/components/common/PageSkeletons'
-import { RequirePlatformAdmin } from '@/components/common/RequirePlatformAdmin'
 import { StatusBadge } from '@/components/common/StatusBadge'
 import { TenantFormSheet } from '@/components/TenantFormSheet'
 import { Button } from '@/components/ui/button'
@@ -63,14 +62,6 @@ const STATUS_OPTIONS = [
 type StatusFilter = (typeof STATUS_OPTIONS)[number]['value']
 
 function TenantsListPage() {
-  return (
-    <RequirePlatformAdmin>
-      <TenantsListBody />
-    </RequirePlatformAdmin>
-  )
-}
-
-function TenantsListBody() {
   const searchParams = useSearch({ from: '/tenants/' })
   const navigate = useNavigate({ from: '/tenants/' })
   const {

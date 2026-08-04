@@ -37,7 +37,6 @@ import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { normalizeErrorMessage } from "@/lib/errors"
 import { useEntityList } from "@/lib/queries"
 import { cn } from "@/lib/utils"
-import { useAuthStore } from "@/store/slices/authSlice"
 import type { Industry } from "@/types/entities"
 
 export const Route = createFileRoute("/industries")({
@@ -57,7 +56,6 @@ type LevelFilter = (typeof LEVEL_OPTIONS)[number]["value"]
 const ROW_BORDER = "border-fg/8"
 
 function IndustriesPage() {
-  const { isAuthenticated, isLoading } = useAuthStore()
   const [page, setPage] = useState(1)
   const limit = 20
   const [searchInput, setSearchInput] = useState("")
@@ -185,9 +183,6 @@ function IndustriesPage() {
     },
     [],
   )
-
-  if (isLoading) return <div className="p-8 text-fg">Loading…</div>
-  if (!isAuthenticated) return null
 
   const levelChip = LEVEL_OPTIONS.find((o) => o.value === levelFilter)
   const hasFilters = Boolean(activeSearch) || levelFilter !== "all"
